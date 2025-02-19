@@ -2,11 +2,11 @@ import { motion, useAnimation } from "framer-motion";
 import { Upload, FileStack, Database, FileSpreadsheet, CheckCircle2, File, Banknote, Calculator, Receipt, CalendarDays, FileText, DollarSign, BarChart4, Download } from "lucide-react";
 import { useState } from "react";
 import { BlockchainCard } from "./blockchain/BlockchainCard";
+
 const Approach = () => {
   const [activeStep, setActiveStep] = useState(0);
   const controls = useAnimation();
 
-  // Mock file upload progress
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const simulateUpload = () => {
@@ -23,6 +23,7 @@ const Approach = () => {
       });
     }, 300);
   };
+
   const sampleReceipts = [{
     name: "Office Supplies",
     amount: 234.56,
@@ -36,10 +37,13 @@ const Approach = () => {
     amount: 499.99,
     date: "2024-03-13"
   }];
+
   const workflow = [{
     title: "Smart Receipt Upload",
     icon: Upload,
     description: "Instantly digitize any receipt—printed, digital image, or PDF format.",
+    iconColor: "text-[#9b87f5]",
+    glowColor: "bg-[#9b87f5]/10",
     widget: <div className="glass-card p-6 rounded-xl relative overflow-hidden group py-[36px]">
       <motion.div initial={{
         opacity: 0
@@ -82,6 +86,8 @@ const Approach = () => {
     title: "AI-Powered Data Extraction",
     icon: FileStack,
     description: "Advanced AI automatically extracts and categorizes receipt data.",
+    iconColor: "text-[#1EAEDB]",
+    glowColor: "bg-[#1EAEDB]/10",
     widget: <div className="glass-card p-6 rounded-xl">
       <div className="space-y-4">
         {sampleReceipts.map((receipt, index) => <motion.div key={index} initial={{
@@ -120,14 +126,17 @@ const Approach = () => {
     title: "Blockchain Verification",
     icon: Database,
     description: "Immutable transaction records on the Cardano network.",
+    iconColor: "text-[#F97316]",
+    glowColor: "bg-[#F97316]/10",
     widget: <BlockchainCard />
   }, {
     title: "Tax-Ready Export",
     icon: FileSpreadsheet,
     description: "One-click export in Turbo Tax compatible format.",
+    iconColor: "text-[#D946EF]",
+    glowColor: "bg-[#D946EF]/10",
     widget: <div className="glass-card p-6 rounded-xl py-[26px]">
       <div className="space-y-4">
-        {/* Header Row */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <motion.div className="p-2.5 rounded-lg bg-white/5 text-green-400" animate={{
@@ -148,7 +157,6 @@ const Approach = () => {
           </span>
         </div>
 
-        {/* Quick Stats Row */}
         <div className="grid grid-cols-4 gap-2">
           {[{
             value: "1,234",
@@ -183,9 +191,7 @@ const Approach = () => {
             </motion.div>)}
         </div>
 
-        {/* Monthly Overview & Actions */}
         <div className="grid grid-cols-2 gap-4">
-          {/* Monthly Overview */}
           <div className="neo-blur p-4 rounded-lg space-y-3">
             <div className="flex justify-between items-center mb-1">
               <h5 className="text-sm font-medium">Monthly Overview</h5>
@@ -229,7 +235,6 @@ const Approach = () => {
               </motion.div>)}
           </div>
 
-          {/* Export Actions */}
           <div className="neo-blur p-4 rounded-lg space-y-3">
             <motion.button whileHover={{
               scale: 1.02
@@ -252,7 +257,6 @@ const Approach = () => {
           </div>
         </div>
 
-        {/* Status Indicator */}
         <motion.div className="absolute bottom-4 right-4 flex items-center gap-2" animate={{
           opacity: [0.5, 1, 0.5]
         }} transition={{
@@ -265,61 +269,89 @@ const Approach = () => {
       </div>
     </div>
   }];
-  return <section className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
+
+  return (
+    <section className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-billsync-accent/5 rounded-full filter blur-[100px]" />
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-purple-600/5 rounded-full filter blur-[120px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true
-      }} transition={{
-        duration: 0.5
-      }} className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
-            Our Approach
-          </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <motion.h2 
+            className="text-3xl sm:text-4xl font-bold text-gradient mb-4"
+            animate={{
+              textShadow: [
+                "0 0 0px rgba(255,255,255,0.5)",
+                "0 0 10px rgba(255,255,255,0.2)",
+                "0 0 0px rgba(255,255,255,0.5)",
+              ],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          >
+            How BillSync Works
+          </motion.h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            A Seamless Four-Step Process
+            Streamline your receipt management with our four-step process
           </p>
         </motion.div>
 
-        {/* Workflow Steps */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {workflow.map((step, index) => <motion.div key={index} initial={{
-          opacity: 0,
-          y: 20
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.5,
-          delay: index * 0.2
-        }} className="relative" onMouseEnter={() => setActiveStep(index)}>
-              <div className="mb-6 flex items-start gap-4">
-                <div className={`p-3 rounded-lg ${activeStep === index ? "bg-billsync-accent text-white" : "bg-billsync-accent/10 text-billsync-accent"} transition-colors duration-200`}>
-                  <step.icon className="h-6 w-6" />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {workflow.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <motion.div
+                  className={`p-2.5 rounded-lg bg-white/5 ${item.iconColor}`}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <item.icon className="h-5 w-5" />
+                </motion.div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-gray-400">{step.description}</p>
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="text-sm text-gray-400">{item.description}</p>
                 </div>
               </div>
-              {step.widget}
-            </motion.div>)}
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <motion.div 
+                  className={`absolute -inset-0.5 rounded-2xl ${item.glowColor} blur-xl`}
+                  animate={{
+                    opacity: [0.3, 0.5, 0.3],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                  }}
+                />
+                {item.widget}
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Approach;
