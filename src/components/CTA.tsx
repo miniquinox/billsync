@@ -1,7 +1,9 @@
+
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
 import { Rocket, Star, ChevronRight, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const CTA = () => {
   const [email, setEmail] = useState("");
@@ -13,18 +15,33 @@ const CTA = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    toast.success("Welcome to the BillSync revolution!", {
-      description: "We'll be in touch soon with exclusive updates.",
-    });
-    
-    setIsSubmitting(false);
-    setEmail("");
-    setName("");
-    setCompany("");
+
+    try {
+      // Insert into Supabase
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([
+          { name, email, company }
+        ]);
+
+      if (error) throw error;
+
+      toast.success("Welcome to the BillSync revolution!", {
+        description: "We'll be in touch soon with exclusive updates.",
+      });
+
+      // Reset form
+      setEmail("");
+      setName("");
+      setCompany("");
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("Something went wrong!", {
+        description: "Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
