@@ -1,5 +1,5 @@
 
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import {
   LineChart,
   Line,
@@ -20,30 +20,131 @@ import {
   ArrowRight,
   BarChart3,
   Lightbulb,
+  PieChart,
+  TrendingUp,
+  Users,
+  BadgeCheck,
+  Receipt,
+  FileWarning,
 } from "lucide-react";
 import { useState } from "react";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Benefits = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const controls = useAnimation();
 
-  // Mock data for charts
+  // Enhanced mock data for charts
   const timelineData = Array.from({ length: 12 }, (_, i) => ({
     month: `Month ${i + 1}`,
     manual: Math.round(100 - i * 5 + Math.random() * 10),
     automated: Math.round(5 + Math.random() * 2),
   }));
 
-  const efficiencyStats = {
-    processedReceipts: 1234,
-    accuracyRate: 99.9,
-    timeReduction: 85,
-    costSavings: 12000,
-  };
+  const benefitCards = [
+    {
+      id: "efficiency",
+      title: "Enhanced Efficiency",
+      description: "Transform your receipt management workflow",
+      icon: Workflow,
+      color: "from-blue-500/20 to-blue-500/5",
+      iconColor: "text-blue-500",
+      metrics: [
+        { label: "Time Saved Monthly", value: "40+ hours", icon: Clock },
+        { label: "Processing Speed", value: "< 5 seconds", icon: TrendingUp },
+      ],
+      chart: (
+        <ResponsiveContainer width="100%" height={120}>
+          <LineChart data={timelineData}>
+            <Tooltip
+              content={({ payload, label }) => (
+                <div className="bg-black/90 p-2 rounded-lg border border-white/10">
+                  <p className="text-sm text-gray-300 mb-1">{label}</p>
+                  {payload?.map((entry) => (
+                    <p
+                      key={entry.name}
+                      className="text-sm"
+                      style={{ color: entry.color }}
+                    >
+                      {entry.name}: {entry.value}
+                    </p>
+                  ))}
+                </div>
+              )}
+            />
+            <Line
+              type="monotone"
+              dataKey="automated"
+              stroke="#3B82F6"
+              strokeWidth={2}
+              name="Processing Time"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      ),
+    },
+    {
+      id: "compliance",
+      title: "Future-Proof Compliance",
+      description: "IRS-ready documentation and blockchain verification",
+      icon: Shield,
+      color: "from-purple-500/20 to-purple-500/5",
+      iconColor: "text-purple-500",
+      metrics: [
+        { label: "Compliance Rate", value: "100%", icon: BadgeCheck },
+        { label: "Audit-Ready Records", value: "Always", icon: FileCheck },
+      ],
+      features: [
+        "Blockchain verification",
+        "Real-time compliance checks",
+        "Automatic backups",
+        "Audit trail",
+      ],
+    },
+    {
+      id: "savings",
+      title: "Cost Optimization",
+      description: "Significant reduction in operational costs",
+      icon: DollarSign,
+      color: "from-green-500/20 to-green-500/5",
+      iconColor: "text-green-500",
+      metrics: [
+        { label: "Annual Savings", value: "$12,000+", icon: TrendingUp },
+        { label: "ROI", value: "300%", icon: PieChart },
+      ],
+      stats: [
+        { label: "Paper Costs", savings: "-90%" },
+        { label: "Storage Fees", savings: "-75%" },
+        { label: "Labor Hours", savings: "-85%" },
+      ],
+    },
+    {
+      id: "accuracy",
+      title: "Enhanced Accuracy",
+      description: "AI-powered data extraction and verification",
+      icon: CheckCircle2,
+      color: "from-yellow-500/20 to-yellow-500/5",
+      iconColor: "text-yellow-500",
+      metrics: [
+        { label: "Accuracy Rate", value: "99.9%", icon: BadgeCheck },
+        { label: "Error Reduction", value: "-95%", icon: FileWarning },
+      ],
+      verificationSteps: [
+        { step: "OCR Scanning", status: "Automated" },
+        { step: "Data Validation", status: "AI-Powered" },
+        { step: "Error Detection", status: "Real-time" },
+      ],
+    },
+  ];
 
   return (
     <section className="py-20 relative overflow-hidden">
-      {/* Animated background gradients */}
+      {/* Background gradients */}
       <div className="absolute inset-0 z-0">
         <motion.div
           animate={{
@@ -84,309 +185,187 @@ const Benefits = () => {
             Benefits & Outcomes
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Efficiency, Accuracy, and Trust – All in One Place
+            Transform Your Receipt Management with BillSync
           </p>
         </motion.div>
 
         {/* Benefits Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Streamlined Process Card */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="glass-card p-8 rounded-xl overflow-hidden"
-            onHoverStart={() => setActiveCard("streamlined")}
-            onHoverEnd={() => setActiveCard(null)}
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-lg bg-billsync-accent text-white">
-                <Workflow className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Streamlined Process</h3>
-                <p className="text-gray-400">
-                  Automate receipt management and reduce errors
-                </p>
-              </div>
-            </div>
-
-            <div className="h-[300px] relative">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={timelineData}>
-                  <XAxis dataKey="month" stroke="#666" />
-                  <YAxis stroke="#666" />
-                  <Tooltip
-                    contentStyle={{
-                      background: "rgba(0,0,0,0.8)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="manual"
-                    stroke="#ef4444"
-                    name="Manual Process"
-                    strokeWidth={2}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="automated"
-                    stroke="#8A2BE2"
-                    name="With BillSync"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {benefitCards.map((benefit) => (
+            <TooltipProvider key={benefit.id}>
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: activeCard === "streamlined" ? 1 : 0 }}
-                className="absolute bottom-4 right-4 flex items-center gap-2 text-sm text-billsync-accent"
+                whileHover={{ scale: 1.02 }}
+                className="glass-card rounded-xl overflow-hidden h-[400px]"
+                onHoverStart={() => setActiveCard(benefit.id)}
+                onHoverEnd={() => setActiveCard(null)}
               >
-                <BarChart3 className="h-4 w-4" />
-                <span>Interactive Chart</span>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Audit-Ready Card */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="glass-card p-8 rounded-xl"
-            onHoverStart={() => setActiveCard("audit")}
-            onHoverEnd={() => setActiveCard(null)}
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-lg bg-billsync-accent text-white">
-                <Shield className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Audit-Ready</h3>
-                <p className="text-gray-400">
-                  Blockchain-verified records for IRS compliance
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  {
-                    icon: FileCheck,
-                    label: "Verified Records",
-                    value: "100%",
-                  },
-                  {
-                    icon: Shield,
-                    label: "Compliance Rate",
-                    value: "99.9%",
-                  },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ scale: 1.05 }}
-                    className="neo-blur p-4 rounded-lg text-center"
-                  >
-                    <stat.icon className="h-6 w-6 text-billsync-accent mx-auto mb-2" />
-                    <div className="text-lg font-bold text-billsync-accent">
-                      {stat.value}
-                    </div>
-                    <div className="text-xs text-gray-400">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <AnimatePresence>
-                {activeCard === "audit" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-3"
-                  >
-                    {[
-                      "Real-time verification",
-                      "Immutable blockchain records",
-                      "IRS-compliant format",
-                      "Instant audit trails",
-                    ].map((feature, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2 text-sm text-gray-400"
-                      >
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                        <span>{feature}</span>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-
-          {/* Time & Cost Savings Card */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="glass-card p-8 rounded-xl"
-            onHoverStart={() => setActiveCard("savings")}
-            onHoverEnd={() => setActiveCard(null)}
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-lg bg-billsync-accent text-white">
-                <Clock className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">
-                  Time & Cost Savings
-                </h3>
-                <p className="text-gray-400">
-                  Focus on growing your business
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  label: "Time Saved Monthly",
-                  value: "40+ hours",
-                  icon: Clock,
-                  color: "text-blue-400",
-                },
-                {
-                  label: "Annual Cost Savings",
-                  value: "$12,000+",
-                  icon: DollarSign,
-                  color: "text-green-400",
-                },
-              ].map((metric, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.02 }}
-                  className="neo-blur p-4 rounded-lg"
+                <div
+                  className={`h-full p-8 bg-gradient-to-br ${benefit.color} relative`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <metric.icon
-                        className={`h-5 w-5 ${metric.color}`}
-                      />
-                      <span className="text-sm text-gray-300">
-                        {metric.label}
-                      </span>
-                    </div>
-                    <span
-                      className={`text-lg font-bold ${metric.color}`}
+                  {/* Card Header */}
+                  <div className="flex items-start gap-4 mb-6">
+                    <div
+                      className={`p-3 rounded-lg bg-white/5 ${benefit.iconColor}`}
                     >
-                      {metric.value}
-                    </span>
+                      <benefit.icon className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {benefit.title}
+                      </h3>
+                      <p className="text-gray-400">{benefit.description}</p>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
 
-              <AnimatePresence>
-                {activeCard === "savings" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    className="neo-blur p-4 rounded-lg"
-                  >
-                    <div className="text-center space-y-2">
-                      <Lightbulb className="h-6 w-6 text-yellow-400 mx-auto" />
-                      <p className="text-sm text-gray-400">
-                        Reinvest saved time and money into growing your business
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+                  {/* Metrics Row */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    {benefit.metrics.map((metric, idx) => (
+                      <UITooltip key={idx}>
+                        <TooltipTrigger asChild>
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="neo-blur p-4 rounded-lg cursor-help"
+                          >
+                            <metric.icon
+                              className={`h-5 w-5 ${benefit.iconColor} mb-2`}
+                            />
+                            <div className="text-lg font-bold">
+                              {metric.value}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {metric.label}
+                            </div>
+                          </motion.div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-sm">
+                            Based on average customer data
+                          </p>
+                        </TooltipContent>
+                      </UITooltip>
+                    ))}
+                  </div>
 
-          {/* Peace of Mind Card */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="glass-card p-8 rounded-xl"
-            onHoverStart={() => setActiveCard("peace")}
-            onHoverEnd={() => setActiveCard(null)}
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-lg bg-billsync-accent text-white">
-                <Heart className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
-                <p className="text-gray-400">
-                  Simple and secure tax filing
-                </p>
-              </div>
-            </div>
+                  {/* Dynamic Content Based on Card Type */}
+                  <div className="mt-4">
+                    {benefit.id === "efficiency" && benefit.chart}
+                    
+                    {benefit.id === "compliance" && benefit.features && (
+                      <div className="space-y-3">
+                        {benefit.features.map((feature, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="flex items-center gap-2"
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            <span className="text-sm text-gray-300">
+                              {feature}
+                            </span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
 
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  {
-                    icon: CheckCircle2,
-                    label: "Auto-Verified",
-                    description: "Every Receipt",
-                  },
-                  {
-                    icon: Shield,
-                    label: "Protected",
-                    description: "Bank-Grade Security",
-                  },
-                  {
-                    icon: FileCheck,
-                    label: "Ready",
-                    description: "Turbo Tax Format",
-                  },
-                  {
-                    icon: Clock,
-                    label: "24/7",
-                    description: "Always Available",
-                  },
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ scale: 1.05 }}
-                    className="neo-blur p-4 rounded-lg text-center"
-                  >
-                    <feature.icon className="h-6 w-6 text-billsync-accent mx-auto mb-2" />
-                    <div className="text-sm font-medium text-gray-300">
-                      {feature.label}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {feature.description}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    {benefit.id === "savings" && benefit.stats && (
+                      <div className="space-y-3">
+                        {benefit.stats.map((stat, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="neo-blur p-3 rounded-lg flex items-center justify-between"
+                          >
+                            <span className="text-sm text-gray-300">
+                              {stat.label}
+                            </span>
+                            <span className="text-sm font-medium text-green-500">
+                              {stat.savings}
+                            </span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
 
-              <AnimatePresence>
-                {activeCard === "peace" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    className="neo-blur p-4 rounded-lg text-center"
-                  >
-                    <p className="text-sm text-gray-400 mb-4">
-                      Experience worry-free tax season with BillSync
-                    </p>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      className="px-6 py-2 bg-billsync-accent/20 text-billsync-accent border border-billsync-accent/30 rounded-lg text-sm font-medium"
-                    >
-                      Get Started Now
-                    </motion.button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+                    {benefit.id === "accuracy" &&
+                      benefit.verificationSteps && (
+                        <div className="space-y-3">
+                          {benefit.verificationSteps.map((step, idx) => (
+                            <motion.div
+                              key={idx}
+                              className="neo-blur p-3 rounded-lg flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2">
+                                <Receipt className="h-4 w-4 text-gray-400" />
+                                <span className="text-sm text-gray-300">
+                                  {step.step}
+                                </span>
+                              </div>
+                              <span
+                                className={`text-xs px-2 py-1 rounded-full ${benefit.color} ${benefit.iconColor}`}
+                              >
+                                {step.status}
+                              </span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      )}
+                  </div>
+                </div>
+              </motion.div>
+            </TooltipProvider>
+          ))}
         </div>
+
+        {/* Summary Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-12 glass-card p-8 rounded-xl"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              {
+                icon: Users,
+                value: "10,000+",
+                label: "Active Users",
+                color: "text-blue-500",
+              },
+              {
+                icon: Receipt,
+                value: "1M+",
+                label: "Receipts Processed",
+                color: "text-purple-500",
+              },
+              {
+                icon: DollarSign,
+                value: "$5M+",
+                label: "Customer Savings",
+                color: "text-green-500",
+              },
+              {
+                icon: BadgeCheck,
+                value: "99.9%",
+                label: "Satisfaction Rate",
+                color: "text-yellow-500",
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                className="text-center"
+              >
+                <stat.icon
+                  className={`h-8 w-8 ${stat.color} mx-auto mb-3`}
+                />
+                <div className="text-2xl font-bold mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
