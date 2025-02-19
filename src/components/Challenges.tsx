@@ -3,7 +3,14 @@ import {
   Clock, 
   AlertCircle, 
   Receipt, 
-  Calculator, 
+  Calculator,
+  CheckCircle2,
+  XCircle,
+  Timer,
+  BarChart,
+  PieChart,
+  TrendingUp,
+  AlertTriangle,
   TimerOff,
   FileClock,
   FileSearch,
@@ -12,16 +19,10 @@ import {
   Receipt as ReceiptIcon,
   ArrowUpDown,
   Ban,
-  CheckCircle2,
-  XCircle,
-  PieChart,
-  TrendingUp,
-  LineChart,
   Activity,
-  AlertTriangle,
   BrainCircuit
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -54,27 +55,198 @@ interface Challenge {
   }
 }
 
-const Particle = ({ delay }: { delay: number }) => {
+const TimeCard = ({ challenge }: { challenge: Challenge }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  
   return (
-    <motion.div
-      initial={{ 
-        opacity: 0,
-        y: Math.random() * 100,
-        x: Math.random() * 100 
-      }}
-      animate={{
-        opacity: [0, 1, 0],
-        y: [0, -100, -200],
-        x: [0, Math.sin(Math.random() * 10) * 50, 0]
-      }}
-      transition={{
-        duration: 10,
-        delay,
-        repeat: Infinity,
-        ease: "linear"
-      }}
-      className="absolute w-1 h-1 rounded-full bg-white/10"
-    />
+    <div className="p-6 h-[300px] flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        <motion.div
+          className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Timer className="h-6 w-6" />
+        </motion.div>
+        <div>
+          <h3 className="text-xl font-semibold">{challenge.title}</h3>
+          <p className="text-sm text-gray-400">{challenge.description}</p>
+        </div>
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={activeIndex}
+          className="flex-1 flex items-center justify-center"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+        >
+          {challenge.stats.map((stat, idx) => (
+            idx === activeIndex && (
+              <motion.div
+                key={idx}
+                className="text-center space-y-2"
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setActiveIndex((prev) => (prev + 1) % challenge.stats.length)}
+              >
+                <div className="text-4xl font-bold text-white mb-2">
+                  {stat.manual} → {stat.automated}
+                </div>
+                <p className="text-gray-400">{stat.label}</p>
+              </motion.div>
+            )
+          ))}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const ReceiptCard = ({ challenge }: { challenge: Challenge }) => {
+  const [showPercentage, setShowPercentage] = useState(false);
+  
+  return (
+    <div className="p-6 h-[300px] flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        <motion.div
+          className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
+          whileHover={{ scale: 1.2 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Receipt className="h-6 w-6" />
+        </motion.div>
+        <div>
+          <h3 className="text-xl font-semibold">{challenge.title}</h3>
+          <p className="text-sm text-gray-400">{challenge.description}</p>
+        </div>
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <motion.div 
+          className="w-32 h-32 relative cursor-pointer"
+          whileHover={{ rotate: 180 }}
+          onClick={() => setShowPercentage(!showPercentage)}
+        >
+          <AnimatePresence mode="wait">
+            {!showPercentage ? (
+              <motion.div
+                key="icon"
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <BarChart className="w-16 h-16 text-amber-500" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="percentage"
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <span className="text-4xl font-bold text-amber-500">85%</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+const ErrorCard = ({ challenge }: { challenge: Challenge }) => {
+  const [currentError, setCurrentError] = useState(0);
+  
+  return (
+    <div className="p-6 h-[300px] flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        <motion.div
+          className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
+          whileHover={{ y: -5 }}
+          transition={{ duration: 0.5 }}
+        >
+          <AlertCircle className="h-6 w-6" />
+        </motion.div>
+        <div>
+          <h3 className="text-xl font-semibold">{challenge.title}</h3>
+          <p className="text-sm text-gray-400">{challenge.description}</p>
+        </div>
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <motion.div 
+          className="text-center cursor-pointer"
+          whileHover={{ scale: 1.1 }}
+          onClick={() => setCurrentError((prev) => (prev + 1) % (challenge.errorTypes?.length || 1))}
+        >
+          <AnimatePresence mode="wait">
+            {challenge.errorTypes?.map((error, idx) => (
+              idx === currentError && (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="space-y-2"
+                >
+                  <div className="text-4xl font-bold">{error.percentage}%</div>
+                  <p className="text-sm text-gray-400">{error.type}</p>
+                </motion.div>
+              )
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+const AccuracyCard = ({ challenge }: { challenge: Challenge }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div className="p-6 h-[300px] flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        <motion.div
+          className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
+          animate={{ rotate: isHovered ? 360 : 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Calculator className="h-6 w-6" />
+        </motion.div>
+        <div>
+          <h3 className="text-xl font-semibold">{challenge.title}</h3>
+          <p className="text-sm text-gray-400">{challenge.description}</p>
+        </div>
+      </div>
+      <div 
+        className="flex-1 flex items-center justify-center"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <motion.div 
+          className="relative w-40 h-40"
+          animate={{ 
+            scale: isHovered ? 1.1 : 1,
+            rotateY: isHovered ? 180 : 0
+          }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <PieChart className="w-20 h-20 text-purple-500" />
+            <motion.div
+              className="absolute"
+              animate={{ 
+                opacity: isHovered ? 1 : 0,
+                scale: isHovered ? 1 : 0.5
+              }}
+            >
+              <span className="text-4xl font-bold">99.9%</span>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -230,6 +402,11 @@ const Challenges = () => {
     },
   ];
 
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    delay: Math.random() * 10
+  }));
+
   const processSteps = [
     {
       icon: Receipt,
@@ -280,11 +457,6 @@ const Challenges = () => {
       }
     }
   ];
-
-  const particles = Array.from({ length: 50 }, (_, i) => ({
-    id: i,
-    delay: Math.random() * 10
-  }));
 
   return (
     <section className="py-16 relative overflow-hidden">
@@ -343,256 +515,18 @@ const Challenges = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="glass-card rounded-2xl overflow-hidden"
+              onHoverStart={() => setActiveCard(challenge.id)}
+              onHoverEnd={() => setActiveCard(null)}
             >
               <motion.div
-                className={`p-6 bg-gradient-to-br ${challenge.color} relative group`}
+                className={`bg-gradient-to-br ${challenge.color} relative group`}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="flex items-start gap-4 mb-6">
-                  <motion.div
-                    className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <challenge.icon className="h-6 w-6" />
-                  </motion.div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold mb-2">{challenge.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed break-words">{challenge.description}</p>
-                  </div>
-                </div>
-
-                {challenge.id === "time" && (
-                  <motion.div className="space-y-4">
-                    {challenge.stats.map((stat: Stat, idx: number) => (
-                      <motion.div
-                        key={idx}
-                        className="neo-blur p-4 rounded-lg"
-                        whileHover={{ scale: 1.02 }}
-                      >
-                        <div className="flex items-center gap-2 mb-2">
-                          <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                          <span className="text-sm text-gray-300">{stat.label}</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="flex items-center gap-2">
-                            <XCircle className="h-4 w-4 text-red-500" />
-                            <div className="text-left">
-                              <span className="text-xs text-gray-400 block">Manual</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                            <div className="text-left">
-                              <span className="text-xs text-gray-400 block">BillSync</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                    <div className="grid grid-cols-2 gap-4">
-                      {challenge.impacts?.map((impact, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: idx * 0.1 }}
-                          className="flex items-center gap-2"
-                        >
-                          <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
-                          <span className="text-sm text-gray-300 text-left">{impact}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {challenge.id === "receipts" && (
-                  <motion.div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      {challenge.stats.map((stat: Stat, idx: number) => (
-                        <motion.div
-                          key={idx}
-                          className="neo-blur p-4 rounded-lg"
-                          whileHover={{
-                            scale: 1.05,
-                            transition: { type: "spring", stiffness: 300 }
-                          }}
-                        >
-                          <div className="flex items-center gap-2 mb-3">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-400">Manual</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-400">BillSync</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium text-gray-300 mb-2">Loss Risk Factors</h4>
-                      {challenge.lossTypes?.map((loss, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="relative"
-                          initial={{ width: 0 }}
-                          whileInView={{ width: "100%" }}
-                          viewport={{ once: true }}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm text-gray-400">{loss.type}</span>
-                            <span className="text-sm font-medium">{loss.percentage}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                            <motion.div
-                              className={`h-full ${challenge.color}`}
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${loss.percentage}%` }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.2 }}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {challenge.id === "errors" && (
-                  <motion.div className="space-y-6">
-                    <div className="grid grid-cols-3 gap-4">
-                      {challenge.errorTypes?.map((error, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="text-center p-4 neo-blur rounded-lg"
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          <div className="relative mb-2">
-                            <svg className="w-16 h-16 mx-auto">
-                              <circle
-                                cx="32"
-                                cy="32"
-                                r="28"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="8"
-                                className="text-gray-700"
-                              />
-                              <motion.circle
-                                cx="32"
-                                cy="32"
-                                r="28"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="8"
-                                className={challenge.iconColor}
-                                strokeDasharray={175.9}
-                                strokeDashoffset={175.9 - (175.9 * error.percentage) / 100}
-                                transform="rotate(-90 32 32)"
-                                initial={{ strokeDashoffset: 175.9 }}
-                                animate={{ strokeDashoffset: 175.9 - (175.9 * error.percentage) / 100 }}
-                                transition={{ duration: 1 }}
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <span className="text-sm font-medium">{error.percentage}%</span>
-                            </div>
-                          </div>
-                          <span className="text-xs text-gray-400">{error.type}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                    {challenge.stats.map((stat: Stat, idx: number) => (
-                      <motion.div
-                        key={idx}
-                        className="neo-blur p-4 rounded-lg"
-                        whileHover={{
-                          y: -5,
-                          transition: { type: "spring", stiffness: 400 }
-                        }}
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                              <XCircle className="h-4 w-4 text-red-500" />
-                              <span className="text-sm">{stat.manual}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              <span className="text-sm">{stat.automated}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-
-                {challenge.id === "accuracy" && (
-                  <motion.div className="space-y-6">
-                    <div className="grid gap-4">
-                      {challenge.accuracyMetrics?.map((metric, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="neo-blur p-4 rounded-lg"
-                          whileHover={{
-                            x: 10,
-                            transition: { type: "spring", damping: 5 }
-                          }}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-300">{metric.metric}</span>
-                            <span className={`text-sm font-medium ${
-                              metric.impact.includes("High") ? "text-red-500" : 
-                              metric.impact.includes("Limited") ? "text-yellow-500" : 
-                              "text-gray-400"
-                            }`}>
-                              {metric.impact}
-                            </span>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      {challenge.stats.map((stat: Stat, idx: number) => (
-                        <motion.div
-                          key={idx}
-                          className="neo-blur p-4 rounded-lg"
-                          whileHover={{ rotate: 5 }}
-                        >
-                          <div className="flex items-center gap-2 mb-3">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-400">Manual</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-400">BillSync</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                {challenge.id === "time" && <TimeCard challenge={challenge} />}
+                {challenge.id === "receipts" && <ReceiptCard challenge={challenge} />}
+                {challenge.id === "errors" && <ErrorCard challenge={challenge} />}
+                {challenge.id === "accuracy" && <AccuracyCard challenge={challenge} />}
               </motion.div>
             </motion.div>
           ))}
