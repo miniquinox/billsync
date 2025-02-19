@@ -1,6 +1,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Database, Shield, Link2, CheckCircle2, Binary, Network } from "lucide-react";
+import { Binary, Network, Database, Link2, CheckCircle2, Shield } from "lucide-react";
 import { useState } from "react";
 
 export const BlockchainCard = () => {
@@ -13,10 +13,8 @@ export const BlockchainCard = () => {
       title: "Data Hashing",
       icon: Binary,
       description: "SHA-256 hash of receipt metadata",
-      technical: "Merkle tree construction with receipt data",
       details: [
         "Receipt ID: 0x7f83b...",
-        "Timestamp: 1709141482",
         "Hash: 0xd4e56740..."
       ]
     },
@@ -25,11 +23,9 @@ export const BlockchainCard = () => {
       title: "Transaction Building",
       icon: Database,
       description: "Cardano native token minting",
-      technical: "Policy ID + Asset Name",
       details: [
         "Policy ID: asset1...",
-        "Token Name: RCPT_0x789...",
-        "Metadata: 721 Standard"
+        "Token Name: RCPT_0x789..."
       ]
     },
     {
@@ -37,11 +33,9 @@ export const BlockchainCard = () => {
       title: "Network Validation",
       icon: Network,
       description: "Submit to Cardano mainnet",
-      technical: "Plutus V2 Script",
       details: [
         "Block: 8.947M",
-        "Slot: 79184491",
-        "Fee: 0.18 ADA"
+        "Slot: 79184491"
       ]
     }
   ];
@@ -78,25 +72,11 @@ export const BlockchainCard = () => {
           borderColor: isHovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.08)"
         }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <motion.div
-            className="p-2.5 rounded-lg bg-white/5 text-blue-400"
-            animate={{ rotate: isHovered ? 360 : 0 }}
-            transition={{ duration: 2 }}
-          >
-            <Shield className="h-5 w-5" />
-          </motion.div>
-          <div>
-            <h3 className="text-lg font-semibold">Blockchain Verification</h3>
-            <p className="text-sm text-gray-400">Immutable proof on Cardano</p>
-          </div>
-        </div>
-
-        <div className="space-y-4">
+        <div className="space-y-3">
           {verificationSteps.map((step, index) => (
             <motion.div
               key={step.id}
-              className={`relative rounded-lg p-4 cursor-pointer transition-colors ${
+              className={`relative rounded-lg p-3 cursor-pointer transition-colors ${
                 activeStep === index ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'
               }`}
               onClick={() => setActiveStep(index)}
@@ -115,11 +95,8 @@ export const BlockchainCard = () => {
                   <step.icon className="h-4 w-4" />
                 </motion.div>
                 <div className="flex-1">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">{step.title}</h4>
-                    <span className="text-xs text-gray-500">{step.technical}</span>
-                  </div>
-                  <p className="text-sm text-gray-400">{step.description}</p>
+                  <h4 className="font-medium text-sm">{step.title}</h4>
+                  <p className="text-xs text-gray-400">{step.description}</p>
                 </div>
               </div>
 
@@ -130,7 +107,7 @@ export const BlockchainCard = () => {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mt-4 space-y-2 overflow-hidden"
+                    className="mt-3 space-y-1.5 overflow-hidden"
                   >
                     {step.details.map((detail, idx) => (
                       <motion.div
@@ -138,7 +115,7 @@ export const BlockchainCard = () => {
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: idx * 0.1 }}
-                        className="flex items-center gap-2 text-sm text-gray-400"
+                        className="flex items-center gap-2 text-xs text-gray-400"
                       >
                         <CheckCircle2 className="h-3 w-3 text-green-400" />
                         <span className="font-mono">{detail}</span>
@@ -148,8 +125,8 @@ export const BlockchainCard = () => {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                      className="mt-3 pt-3 border-t border-white/5"
+                      transition={{ delay: 0.2 }}
+                      className="mt-2 pt-2 border-t border-white/5"
                     >
                       <div className="flex items-center gap-2 text-xs text-blue-400">
                         <Link2 className="h-3 w-3" />
