@@ -1,4 +1,3 @@
-
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Clock, 
@@ -22,13 +21,37 @@ import {
   AlertTriangle,
   BrainCircuit
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
+const Particle = ({ delay }: { delay: number }) => {
+  return (
+    <motion.div
+      initial={{ 
+        opacity: 0,
+        y: Math.random() * 100,
+        x: Math.random() * 100 
+      }}
+      animate={{
+        opacity: [0, 1, 0],
+        y: [0, -100, -200],
+        x: [0, Math.sin(Math.random() * 10) * 50, 0]
+      }}
+      transition={{
+        duration: 10,
+        delay,
+        repeat: Infinity,
+        ease: "linear"
+      }}
+      className="absolute w-1 h-1 rounded-full bg-white/10"
+    />
+  );
+};
 
 const Challenges = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
@@ -182,10 +205,17 @@ const Challenges = () => {
     },
   ];
 
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    delay: Math.random() * 10
+  }));
+
   return (
     <section className="py-16 relative overflow-hidden">
-      {/* Background Elements */}
       <div className="absolute inset-0 z-0">
+        {particles.map((particle) => (
+          <Particle key={particle.id} delay={particle.delay} />
+        ))}
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
@@ -213,7 +243,6 @@ const Challenges = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -229,7 +258,6 @@ const Challenges = () => {
           </p>
         </motion.div>
 
-        {/* Challenge Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {challenges.map((challenge, index) => (
             <motion.div
@@ -238,16 +266,15 @@ const Challenges = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card rounded-2xl overflow-hidden"
+              className="glass-card rounded-2xl overflow-hidden h-[400px]"
               onHoverStart={() => setActiveCard(challenge.id)}
               onHoverEnd={() => setActiveCard(null)}
             >
               <motion.div
-                className={`p-6 bg-gradient-to-br ${challenge.color} relative group`}
+                className={`h-full p-6 bg-gradient-to-br ${challenge.color} relative group`}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Card Header */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div
                     className={`p-3 rounded-lg bg-white/5 ${challenge.iconColor}`}
@@ -262,59 +289,65 @@ const Challenges = () => {
                   </div>
                 </div>
 
-                {/* Stats Comparison */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  {challenge.stats.map((stat, idx) => (
-                    <TooltipProvider key={idx}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <motion.div
-                            className="neo-blur p-4 rounded-lg relative overflow-hidden group cursor-help"
-                            whileHover={{ scale: 1.05 }}
-                          >
-                            <motion.div
-                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                              initial={{ x: "-100%" }}
-                              whileHover={{ x: "100%" }}
-                              transition={{ duration: 0.5 }}
-                            />
-                            <div className="flex items-center gap-2 mb-2">
-                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{stat.label}</span>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <XCircle className="h-4 w-4 text-red-500" />
-                                <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{stat.manual}</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{stat.automated}</span>
-                              </div>
-                            </div>
-                          </motion.div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-sm">Based on industry averages</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ))}
-                </div>
-
-                {/* Dynamic Content Based on Challenge Type */}
-                <AnimatePresence mode="wait">
+                <div className="relative h-[280px] overflow-hidden">
                   <motion.div
-                    key={activeCard === challenge.id ? "active" : "inactive"}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 1 }}
+                    animate={{ 
+                      opacity: activeCard === challenge.id ? 0 : 1,
+                      x: activeCard === challenge.id ? -20 : 0 
+                    }}
+                    className="absolute inset-0"
                   >
+                    <div className="grid grid-cols-2 gap-4">
+                      {challenge.stats.map((stat, idx) => (
+                        <TooltipProvider key={idx}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <motion.div
+                                className="neo-blur p-4 rounded-lg relative overflow-hidden group cursor-help"
+                                whileHover={{ scale: 1.05 }}
+                              >
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                                  initial={{ x: "-100%" }}
+                                  whileHover={{ x: "100%" }}
+                                  transition={{ duration: 0.5 }}
+                                />
+                                <div className="flex items-center gap-2 mb-2">
+                                  <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                                  <span className="text-sm text-gray-300">{stat.label}</span>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <XCircle className="h-4 w-4 text-red-500" />
+                                    <span className="text-sm text-gray-400">Manual:</span>
+                                    <span className="text-sm font-medium">{stat.manual}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                    <span className="text-sm text-gray-400">BillSync:</span>
+                                    <span className="text-sm font-medium">{stat.automated}</span>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-sm">Based on industry averages</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <AnimatePresence>
                     {activeCard === challenge.id && (
-                      <div className="space-y-4">
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        className="absolute inset-0"
+                      >
                         {challenge.id === "time" && (
                           <div className="neo-blur p-4 rounded-lg">
                             <h4 className="text-sm font-medium mb-3">Common Impacts:</h4>
@@ -433,7 +466,6 @@ const Challenges = () => {
                           </div>
                         )}
 
-                        {/* Solution Preview */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -455,13 +487,103 @@ const Challenges = () => {
                             ))}
                           </div>
                         </motion.div>
-                      </div>
+                      </motion.div>
                     )}
-                  </motion.div>
-                </AnimatePresence>
+                  </AnimatePresence>
+                </div>
               </motion.div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h3 className="text-2xl sm:text-3xl font-bold text-gradient mb-4">
+              Traditional vs BillSync Process
+            </h3>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              See how BillSync transforms your receipt management workflow
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="glass-card p-6 rounded-xl"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-lg bg-red-500/20 text-red-500">
+                  <XCircle className="h-6 w-6" />
+                </div>
+                <h4 className="text-xl font-semibold">Traditional Process</h4>
+              </div>
+              <div className="space-y-4">
+                {[
+                  "Manual data entry and verification",
+                  "Physical storage and filing",
+                  "Time-consuming categorization",
+                  "Prone to human error",
+                  "Limited accessibility",
+                  "Risk of loss or damage"
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <Ban className="h-4 w-4 text-red-500" />
+                    <span className="text-gray-400">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="glass-card p-6 rounded-xl"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 rounded-lg bg-green-500/20 text-green-500">
+                  <CheckCircle2 className="h-6 w-6" />
+                </div>
+                <h4 className="text-xl font-semibold">BillSync Process</h4>
+              </div>
+              <div className="space-y-4">
+                {[
+                  "Instant digital capture and backup",
+                  "Automated data extraction",
+                  "Smart categorization",
+                  "99.9% accuracy rate",
+                  "24/7 cloud accessibility",
+                  "Secure and organized storage"
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span className="text-gray-400">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
