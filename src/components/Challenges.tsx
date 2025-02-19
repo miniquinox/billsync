@@ -61,60 +61,69 @@ const Challenges = () => {
 
   return (
     <section className="py-16 relative overflow-hidden">
-      {/* Background Elements */}
+      {/* Animated Background Blobs */}
       <div className="absolute inset-0 z-0">
-        {/* Large blurred spots */}
+        {/* Floating blob 1 - Purple/Pink */}
         <motion.div
-          className="absolute top-20 -left-32 w-96 h-96 bg-red-500/10 rounded-full blur-[100px]"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute -top-32 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            repeatType: "reverse",
-            delay: 1,
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-1/3 w-96 h-96 bg-yellow-500/10 rounded-full blur-[100px]"
-          animate={{
-            scale: [1.1, 1, 1.1],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            repeatType: "reverse",
-            delay: 2,
-          }}
-        />
-
-        {/* Grid texture */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full mix-blend-multiply filter blur-[128px]"
           style={{
-            backgroundImage: `linear-gradient(to right, white 1px, transparent 1px),
-                             linear-gradient(to bottom, white 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
+            background: "linear-gradient(180deg, rgba(138, 43, 226, 0.3), rgba(255, 0, 255, 0.1))"
+          }}
+          animate={{
+            x: [0, 50, -30, 0],
+            y: [0, -30, 50, 0],
+            scale: [1, 1.1, 0.9, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "linear"
           }}
         />
 
-        {/* Radial gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-billsync-dark/80 to-billsync-dark" />
+        {/* Floating blob 2 - Blue/Cyan */}
+        <motion.div
+          className="absolute top-1/3 right-1/4 w-[600px] h-[600px] rounded-full mix-blend-multiply filter blur-[128px]"
+          style={{
+            background: "linear-gradient(180deg, rgba(0, 255, 255, 0.2), rgba(0, 0, 255, 0.1))"
+          }}
+          animate={{
+            x: [0, -50, 30, 0],
+            y: [0, 50, -30, 0],
+            scale: [1, 0.9, 1.1, 1],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "linear",
+            delay: 1
+          }}
+        />
+
+        {/* Floating blob 3 - Orange/Red */}
+        <motion.div
+          className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] rounded-full mix-blend-multiply filter blur-[128px]"
+          style={{
+            background: "linear-gradient(180deg, rgba(255, 165, 0, 0.2), rgba(255, 0, 0, 0.1))"
+          }}
+          animate={{
+            x: [0, 30, -50, 0],
+            y: [0, -50, 30, 0],
+            scale: [1, 1.1, 0.9, 1],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "linear",
+            delay: 2
+          }}
+        />
+
+        {/* Gradient overlay to soften the background */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-billsync-dark/90 to-billsync-dark" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
