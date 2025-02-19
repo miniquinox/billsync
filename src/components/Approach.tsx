@@ -79,7 +79,7 @@ const Approach = () => {
                     <CheckCircle2 className="h-5 w-5" />
                     <span>Upload Complete!</span>
                   </motion.div>}
-              </div> : <div className="space-y-4 my-[57px]">
+              </div> : <div className="space-y-4 my-[109px]">
                 <Upload className="w-12 h-12 text-[#9b87f5] mx-auto mb-4" />
                 <p className="text-sm text-gray-400 mb-2">
                   Drop your receipt here or click to upload
