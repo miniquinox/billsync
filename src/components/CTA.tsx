@@ -17,7 +17,7 @@ const CTA = () => {
     setIsSubmitting(true);
 
     try {
-      // First, insert the record into the waitlist table
+      // Insert into waitlist table
       const { data, error } = await supabase
         .from('waitlist')
         .insert([
@@ -31,14 +31,16 @@ const CTA = () => {
         throw new Error(error.message);
       }
 
-      // Then, trigger the email notification
-      const { error: notifyError } = await supabase.functions.invoke('notify-waitlist', {
-        body: { record: data }
-      });
-
-      if (notifyError) {
-        console.error('Notification error:', notifyError.message);
-        // Don't throw here as the main operation succeeded
+      // Only try to send notification if insert was successful
+      if (data) {
+        try {
+          await supabase.functions.invoke('notify-waitlist', {
+            body: { record: data }
+          });
+        } catch (notifyError) {
+          // Log but don't throw notification errors
+          console.error('Notification error:', notifyError);
+        }
       }
 
       toast.success("Welcome to the BillSync revolution!", {
