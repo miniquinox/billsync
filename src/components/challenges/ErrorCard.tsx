@@ -1,13 +1,19 @@
 
-import { motion, AnimatePresence } from "framer-motion";
-import { AlertCircle, AlertTriangle } from "lucide-react";
+import { motion } from "framer-motion";
+import { AlertTriangle, XCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { Challenge } from "./types";
 
 export const ErrorCard = ({ challenge }: { challenge: Challenge }) => {
-  const [currentError, setCurrentError] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [activeError, setActiveError] = useState<number | null>(null);
   
+  const errors = [
+    { type: "Data Entry", count: 15, examples: ["$156.78 → $165.78", "Apr → Aug"] },
+    { type: "Missing Info", count: 8, examples: ["No Category", "No Date"] },
+    { type: "Duplicates", count: 5, examples: ["Same receipt 2x", "Double entry"] }
+  ];
+
   return (
     <motion.div
       className={`w-full h-full bg-gradient-to-br ${challenge.color} rounded-2xl`}
@@ -18,8 +24,8 @@ export const ErrorCard = ({ challenge }: { challenge: Challenge }) => {
         <div className="flex items-center gap-3 mb-4">
           <motion.div
             className={`p-2.5 rounded-lg bg-white/5 ${challenge.iconColor}`}
-            animate={{ rotate: isHovered ? 360 : 0 }}
-            transition={{ duration: 1 }}
+            animate={{ rotate: isHovered ? [0, -15, 15, -15, 0] : 0 }}
+            transition={{ duration: 0.5 }}
           >
             <AlertTriangle className="h-5 w-5" />
           </motion.div>
@@ -29,38 +35,50 @@ export const ErrorCard = ({ challenge }: { challenge: Challenge }) => {
           </div>
         </div>
         <div 
-          className="flex-1 flex flex-col items-center justify-center gap-2"
+          className="flex-1 flex flex-col justify-center gap-3"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <motion.div 
-            className="text-center cursor-pointer"
-            onClick={() => setCurrentError((prev) => (prev + 1) % (challenge.errorTypes?.length || 1))}
-          >
-            <AnimatePresence mode="wait">
-              {challenge.errorTypes?.map((error, idx) => (
-                idx === currentError && (
+          {errors.map((error, idx) => (
+            <motion.div
+              key={idx}
+              className="relative cursor-pointer"
+              onMouseEnter={() => setActiveError(idx)}
+              onMouseLeave={() => setActiveError(null)}
+            >
+              <div className="flex items-center justify-between text-sm">
+                <span>{error.type}</span>
+                <span>{error.count} errors/month</span>
+              </div>
+              <motion.div 
+                className="h-1.5 rounded-full bg-white/10 mt-1 relative overflow-hidden"
+                whileHover={{ height: "2.5rem" }}
+              >
+                <motion.div
+                  className="h-full rounded-full bg-yellow-500/50"
+                  initial={{ width: "100%" }}
+                  animate={{ width: activeError === idx ? "0%" : "100%" }}
+                  transition={{ duration: 0.5 }}
+                />
+                {activeError === idx && (
                   <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="space-y-1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute inset-0 flex items-center justify-between px-2 text-xs"
                   >
-                    <div className="text-3xl font-bold">{error.percentage}%</div>
-                    <p className="text-sm text-gray-400">{error.type}</p>
+                    <span className="flex items-center gap-1">
+                      <XCircle className="h-3 w-3 text-red-400" />
+                      {error.examples[0]}
+                    </span>
+                    <span className="flex items-center gap-1 text-emerald-400">
+                      <CheckCircle className="h-3 w-3" />
+                      {error.examples[1]}
+                    </span>
                   </motion.div>
-                )
-              ))}
-            </AnimatePresence>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-            className="text-xs text-emerald-400 text-center mt-2"
-          >
-            AI validation eliminates 99.9% of errors
-          </motion.div>
+                )}
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </motion.div>
