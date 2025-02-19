@@ -17,15 +17,28 @@ const CTA = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
+      // First, insert the record into the waitlist table
+      const { data, error } = await supabase
         .from('waitlist')
         .insert([
           { name, email, company }
-        ]);
+        ])
+        .select()
+        .single();
 
       if (error) {
         console.error('Supabase error message:', error.message);
         throw new Error(error.message);
+      }
+
+      // Then, trigger the email notification
+      const { error: notifyError } = await supabase.functions.invoke('notify-waitlist', {
+        body: { record: data }
+      });
+
+      if (notifyError) {
+        console.error('Notification error:', notifyError.message);
+        // Don't throw here as the main operation succeeded
       }
 
       toast.success("Welcome to the BillSync revolution!", {
