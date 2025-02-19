@@ -39,7 +39,7 @@ const Approach = () => {
     title: "Smart Receipt Upload",
     icon: Upload,
     description: "Instantly digitize any receipt—printed, digital image, or PDF format.",
-    widget: <div className="glass-card p-6 rounded-xl relative overflow-hidden group py-[93px]">
+    widget: <div className="glass-card p-6 rounded-xl relative overflow-hidden group py-[36px]">
           <motion.div initial={{
         opacity: 0
       }} animate={{
