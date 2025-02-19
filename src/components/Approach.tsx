@@ -2,7 +2,6 @@ import { motion, useAnimation } from "framer-motion";
 import { Upload, FileStack, Database, FileSpreadsheet, CheckCircle2, File, Banknote, Calculator, Receipt, CalendarDays, FileText, DollarSign, BarChart4, Download } from "lucide-react";
 import { useState } from "react";
 import { BlockchainCard } from "./blockchain/BlockchainCard";
-
 const Approach = () => {
   const [activeStep, setActiveStep] = useState(0);
   const controls = useAnimation();
@@ -24,7 +23,6 @@ const Approach = () => {
       });
     }, 300);
   };
-
   const sampleReceipts = [{
     name: "Office Supplies",
     amount: 234.56,
@@ -38,7 +36,6 @@ const Approach = () => {
     amount: 499.99,
     date: "2024-03-13"
   }];
-
   const workflow = [{
     title: "Smart Receipt Upload",
     icon: Upload,
@@ -128,16 +125,17 @@ const Approach = () => {
     title: "Tax-Ready Export",
     icon: FileSpreadsheet,
     description: "One-click export in Turbo Tax compatible format.",
-    widget: <div className="glass-card p-6 rounded-xl">
+    widget: <div className="glass-card p-6 rounded-xl py-[26px]">
       <div className="space-y-4">
         {/* Header Row */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <motion.div
-              className="p-2.5 rounded-lg bg-white/5 text-green-400"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <motion.div className="p-2.5 rounded-lg bg-white/5 text-green-400" animate={{
+              rotate: [0, 10, -10, 0]
+            }} transition={{
+              duration: 2,
+              repeat: Infinity
+            }}>
               <FileText className="h-5 w-5" />
             </motion.div>
             <div>
@@ -172,12 +170,9 @@ const Approach = () => {
             label: "Tax",
             icon: Calculator,
             color: "text-orange-400"
-          }].map((stat, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              className="neo-blur p-2 rounded-lg text-center"
-            >
+          }].map((stat, index) => <motion.div key={index} whileHover={{
+            scale: 1.05
+          }} className="neo-blur p-2 rounded-lg text-center">
               <div className={`${stat.color} mb-1 flex justify-center`}>
                 <stat.icon className="h-4 w-4" />
               </div>
@@ -185,8 +180,7 @@ const Approach = () => {
                 {stat.value}
               </div>
               <div className="text-xs text-gray-400">{stat.label}</div>
-            </motion.div>
-          ))}
+            </motion.div>)}
         </div>
 
         {/* Monthly Overview & Actions */}
@@ -197,54 +191,61 @@ const Approach = () => {
               <h5 className="text-sm font-medium">Monthly Overview</h5>
               <BarChart4 className="h-4 w-4 text-gray-400" />
             </div>
-            {[
-              { month: "Mar", amount: 12456, percentage: 80 },
-              { month: "Feb", amount: 8234, percentage: 60 },
-              { month: "Jan", amount: 6123, percentage: 40 }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="space-y-1"
-              >
+            {[{
+              month: "Mar",
+              amount: 12456,
+              percentage: 80
+            }, {
+              month: "Feb",
+              amount: 8234,
+              percentage: 60
+            }, {
+              month: "Jan",
+              amount: 6123,
+              percentage: 40
+            }].map((item, index) => <motion.div key={index} initial={{
+              x: -20,
+              opacity: 0
+            }} animate={{
+              x: 0,
+              opacity: 1
+            }} transition={{
+              delay: index * 0.1
+            }} className="space-y-1">
                 <div className="flex justify-between text-xs">
                   <span className="text-gray-400">{item.month}</span>
                   <span className="text-billsync-accent">${item.amount.toLocaleString()}</span>
                 </div>
                 <div className="w-full bg-white/5 rounded-full h-1">
-                  <motion.div
-                    className="bg-billsync-accent h-1 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${item.percentage}%` }}
-                    transition={{ duration: 1, delay: index * 0.2 }}
-                  />
+                  <motion.div className="bg-billsync-accent h-1 rounded-full" initial={{
+                  width: 0
+                }} animate={{
+                  width: `${item.percentage}%`
+                }} transition={{
+                  duration: 1,
+                  delay: index * 0.2
+                }} />
                 </div>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </div>
 
           {/* Export Actions */}
           <div className="neo-blur p-4 rounded-lg space-y-3">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              className="w-full py-2 bg-billsync-accent text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2"
-            >
+            <motion.button whileHover={{
+              scale: 1.02
+            }} className="w-full py-2 bg-billsync-accent text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2">
               <Download className="h-4 w-4" />
               Export to TurboTax
             </motion.button>
             <div className="grid grid-cols-2 gap-2">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                className="py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-medium"
-              >
+              <motion.button whileHover={{
+                scale: 1.02
+              }} className="py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-medium">
                 Preview Data
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                className="py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-medium"
-              >
+              <motion.button whileHover={{
+                scale: 1.02
+              }} className="py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-medium">
                 Schedule Export
               </motion.button>
             </div>
@@ -252,25 +253,19 @@ const Approach = () => {
         </div>
 
         {/* Status Indicator */}
-        <motion.div 
-          className="absolute bottom-4 right-4 flex items-center gap-2"
-          animate={{
-            opacity: [0.5, 1, 0.5],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-        >
+        <motion.div className="absolute bottom-4 right-4 flex items-center gap-2" animate={{
+          opacity: [0.5, 1, 0.5]
+        }} transition={{
+          duration: 2,
+          repeat: Infinity
+        }}>
           <div className="h-2 w-2 rounded-full bg-green-500" />
           <span className="text-xs text-gray-400">TurboTax Connected</span>
         </motion.div>
       </div>
     </div>
   }];
-
-  return (
-    <section className="py-20 relative overflow-hidden">
+  return <section className="py-20 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-billsync-accent/5 rounded-full filter blur-[100px]" />
@@ -279,13 +274,17 @@ const Approach = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} viewport={{
+        once: true
+      }} transition={{
+        duration: 0.5
+      }} className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
             Our Approach
           </h2>
@@ -296,22 +295,20 @@ const Approach = () => {
 
         {/* Workflow Steps */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {workflow.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="relative"
-              onMouseEnter={() => setActiveStep(index)}
-            >
+          {workflow.map((step, index) => <motion.div key={index} initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.5,
+          delay: index * 0.2
+        }} className="relative" onMouseEnter={() => setActiveStep(index)}>
               <div className="mb-6 flex items-start gap-4">
-                <div className={`p-3 rounded-lg ${
-                  activeStep === index
-                    ? "bg-billsync-accent text-white"
-                    : "bg-billsync-accent/10 text-billsync-accent"
-                } transition-colors duration-200`}>
+                <div className={`p-3 rounded-lg ${activeStep === index ? "bg-billsync-accent text-white" : "bg-billsync-accent/10 text-billsync-accent"} transition-colors duration-200`}>
                   <step.icon className="h-6 w-6" />
                 </div>
                 <div>
@@ -320,12 +317,9 @@ const Approach = () => {
                 </div>
               </div>
               {step.widget}
-            </motion.div>
-          ))}
+            </motion.div>)}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Approach;
