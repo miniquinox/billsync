@@ -29,19 +29,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Define types for our stats and challenges
 interface Stat {
   label: string;
   manual: string;
   automated: string;
-  icon: any; // You might want to be more specific with the icon type
+  icon: any;
 }
 
 interface Challenge {
   id: string;
   title: string;
   description: string;
-  icon: any; // You might want to be more specific with the icon type
+  icon: any;
   color: string;
   iconColor: string;
   stats: Stat[];
@@ -335,7 +334,7 @@ const Challenges = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           {challenges.map((challenge, index) => (
             <motion.div
               key={challenge.id}
@@ -343,12 +342,10 @@ const Challenges = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card rounded-2xl overflow-hidden h-[400px]"
-              onHoverStart={() => setActiveCard(challenge.id)}
-              onHoverEnd={() => setActiveCard(null)}
+              className="glass-card rounded-2xl overflow-hidden"
             >
               <motion.div
-                className={`h-full p-6 bg-gradient-to-br ${challenge.color} relative group`}
+                className={`p-6 bg-gradient-to-br ${challenge.color} relative group`}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -360,39 +357,43 @@ const Challenges = () => {
                   >
                     <challenge.icon className="h-6 w-6" />
                   </motion.div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2">{challenge.title}</h3>
-                    <p className="text-gray-400">{challenge.description}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed break-words">{challenge.description}</p>
                   </div>
                 </div>
 
-                <div className="relative h-[280px]">
-                  {challenge.id === "time" && (
-                    <motion.div className="space-y-4">
-                      {challenge.stats.map((stat: Stat, idx: number) => (
-                        <motion.div
-                          key={idx}
-                          className="neo-blur p-4 rounded-lg"
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <div className="flex items-center gap-2 mb-2">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
-                          </div>
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <XCircle className="h-4 w-4 text-red-500" />
-                              <span className="text-sm text-gray-400">Manual:</span>
+                {challenge.id === "time" && (
+                  <motion.div className="space-y-4">
+                    {challenge.stats.map((stat: Stat, idx: number) => (
+                      <motion.div
+                        key={idx}
+                        className="neo-blur p-4 rounded-lg"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                          <span className="text-sm text-gray-300">{stat.label}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex items-center gap-2">
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <div className="text-left">
+                              <span className="text-xs text-gray-400 block">Manual</span>
                               <span className="text-sm font-medium">{stat.manual}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              <span className="text-sm text-gray-400">BillSync:</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            <div className="text-left">
+                              <span className="text-xs text-gray-400 block">BillSync</span>
                               <span className="text-sm font-medium">{stat.automated}</span>
                             </div>
                           </div>
-                        </motion.div>
-                      ))}
+                        </div>
+                      </motion.div>
+                    ))}
+                    <div className="grid grid-cols-2 gap-4">
                       {challenge.impacts?.map((impact, idx) => (
                         <motion.div
                           key={idx}
@@ -401,140 +402,149 @@ const Challenges = () => {
                           transition={{ delay: idx * 0.1 }}
                           className="flex items-center gap-2"
                         >
-                          <AlertTriangle className="h-4 w-4 text-amber-500" />
-                          <span className="text-sm text-gray-300">{impact}</span>
+                          <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
+                          <span className="text-sm text-gray-300 text-left">{impact}</span>
                         </motion.div>
                       ))}
-                    </motion.div>
-                  )}
+                    </div>
+                  </motion.div>
+                )}
 
-                  {challenge.id === "receipts" && (
-                    <motion.div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((stat: Stat, idx: number) => (
-                          <motion.div
-                            key={idx}
-                            className="neo-blur p-4 rounded-lg"
-                            whileHover={{
-                              scale: 1.05,
-                              transition: { type: "spring", stiffness: 300 }
-                            }}
-                          >
-                            <div className="flex items-center gap-2 mb-2">
-                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{stat.label}</span>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <XCircle className="h-4 w-4 text-red-500" />
-                                <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{stat.manual}</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{stat.automated}</span>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                      <div className="space-y-3">
-                        {challenge.lossTypes?.map((loss, idx) => (
-                          <motion.div
-                            key={idx}
-                            className="relative h-8"
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${loss.percentage}%` }}
-                            viewport={{ once: true }}
-                          >
-                            <div className={`absolute inset-0 ${challenge.color} rounded-full`} />
-                            <div className="absolute inset-0 flex items-center justify-between px-3">
-                              <span className="text-xs">{loss.type}</span>
-                              <span className="text-xs font-medium">{loss.percentage}%</span>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {challenge.id === "errors" && (
-                    <motion.div className="space-y-4">
-                      <div className="grid grid-cols-3 gap-3">
-                        {challenge.errorTypes?.map((error, idx) => (
-                          <motion.div
-                            key={idx}
-                            className="text-center"
-                            whileHover={{ scale: 1.1 }}
-                          >
-                            <div className="relative mb-2">
-                              <svg className="w-16 h-16">
-                                <circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="8"
-                                  className="text-gray-700"
-                                />
-                                <motion.circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="8"
-                                  className={challenge.iconColor}
-                                  strokeDasharray={175.9}
-                                  strokeDashoffset={175.9 - (175.9 * error.percentage) / 100}
-                                  transform="rotate(-90 32 32)"
-                                  initial={{ strokeDashoffset: 175.9 }}
-                                  animate={{ strokeDashoffset: 175.9 - (175.9 * error.percentage) / 100 }}
-                                  transition={{ duration: 1 }}
-                                />
-                              </svg>
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-sm font-medium">{error.percentage}%</span>
-                              </div>
-                            </div>
-                            <span className="text-xs text-gray-400">{error.type}</span>
-                          </motion.div>
-                        ))}
-                      </div>
+                {challenge.id === "receipts" && (
+                  <motion.div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
                       {challenge.stats.map((stat: Stat, idx: number) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
                           whileHover={{
-                            y: -5,
-                            transition: { type: "spring", stiffness: 400 }
+                            scale: 1.05,
+                            transition: { type: "spring", stiffness: 300 }
                           }}
                         >
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center gap-2 mb-3">
                             <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
                             <span className="text-sm text-gray-300">{stat.label}</span>
                           </div>
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <XCircle className="h-4 w-4 text-red-500" />
-                              <span className="text-sm text-gray-400">Manual:</span>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-400">Manual</span>
                               <span className="text-sm font-medium">{stat.manual}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              <span className="text-sm text-gray-400">BillSync:</span>
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-400">BillSync</span>
                               <span className="text-sm font-medium">{stat.automated}</span>
                             </div>
                           </div>
                         </motion.div>
                       ))}
-                    </motion.div>
-                  )}
+                    </div>
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-medium text-gray-300 mb-2">Loss Risk Factors</h4>
+                      {challenge.lossTypes?.map((loss, idx) => (
+                        <motion.div
+                          key={idx}
+                          className="relative"
+                          initial={{ width: 0 }}
+                          whileInView={{ width: "100%" }}
+                          viewport={{ once: true }}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm text-gray-400">{loss.type}</span>
+                            <span className="text-sm font-medium">{loss.percentage}%</span>
+                          </div>
+                          <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <motion.div
+                              className={`h-full ${challenge.color}`}
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${loss.percentage}%` }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.2 }}
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
 
-                  {challenge.id === "accuracy" && (
-                    <motion.div className="space-y-4">
+                {challenge.id === "errors" && (
+                  <motion.div className="space-y-6">
+                    <div className="grid grid-cols-3 gap-4">
+                      {challenge.errorTypes?.map((error, idx) => (
+                        <motion.div
+                          key={idx}
+                          className="text-center p-4 neo-blur rounded-lg"
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          <div className="relative mb-2">
+                            <svg className="w-16 h-16 mx-auto">
+                              <circle
+                                cx="32"
+                                cy="32"
+                                r="28"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="8"
+                                className="text-gray-700"
+                              />
+                              <motion.circle
+                                cx="32"
+                                cy="32"
+                                r="28"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="8"
+                                className={challenge.iconColor}
+                                strokeDasharray={175.9}
+                                strokeDashoffset={175.9 - (175.9 * error.percentage) / 100}
+                                transform="rotate(-90 32 32)"
+                                initial={{ strokeDashoffset: 175.9 }}
+                                animate={{ strokeDashoffset: 175.9 - (175.9 * error.percentage) / 100 }}
+                                transition={{ duration: 1 }}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-sm font-medium">{error.percentage}%</span>
+                            </div>
+                          </div>
+                          <span className="text-xs text-gray-400">{error.type}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    {challenge.stats.map((stat: Stat, idx: number) => (
+                      <motion.div
+                        key={idx}
+                        className="neo-blur p-4 rounded-lg"
+                        whileHover={{
+                          y: -5,
+                          transition: { type: "spring", stiffness: 400 }
+                        }}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              <XCircle className="h-4 w-4 text-red-500" />
+                              <span className="text-sm">{stat.manual}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                              <span className="text-sm">{stat.automated}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+
+                {challenge.id === "accuracy" && (
+                  <motion.div className="space-y-6">
+                    <div className="grid gap-4">
                       {challenge.accuracyMetrics?.map((metric, idx) => (
                         <motion.div
                           key={idx}
@@ -544,46 +554,45 @@ const Challenges = () => {
                             transition: { type: "spring", damping: 5 }
                           }}
                         >
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-300">{metric.metric}</span>
+                            <span className={`text-sm font-medium ${
+                              metric.impact.includes("High") ? "text-red-500" : 
+                              metric.impact.includes("Limited") ? "text-yellow-500" : 
+                              "text-gray-400"
+                            }`}>
+                              {metric.impact}
+                            </span>
                           </div>
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-400">Impact:</span>
-                              <span className="text-sm font-medium">{metric.impact}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {challenge.stats.map((stat: Stat, idx: number) => (
+                        <motion.div
+                          key={idx}
+                          className="neo-blur p-4 rounded-lg"
+                          whileHover={{ rotate: 5 }}
+                        >
+                          <div className="flex items-center gap-2 mb-3">
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-400">Manual</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-400">BillSync</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
                             </div>
                           </div>
                         </motion.div>
                       ))}
-                      <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((stat: Stat, idx: number) => (
-                          <motion.div
-                            key={idx}
-                            className="neo-blur p-4 rounded-lg"
-                            whileHover={{ rotate: 5 }}
-                          >
-                            <div className="flex items-center gap-2 mb-2">
-                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{stat.label}</span>
-                            </div>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <XCircle className="h-4 w-4 text-red-500" />
-                                <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{stat.manual}</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{stat.automated}</span>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             </motion.div>
           ))}
