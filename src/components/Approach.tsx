@@ -1,6 +1,50 @@
 import { motion, useAnimation } from "framer-motion";
 import { Upload, FileStack, Database, FileSpreadsheet, CheckCircle2, File, Banknote, Calculator, Receipt, CalendarDays } from "lucide-react";
 import { useState } from "react";
+
+const BlockchainCard = () => {
+  return <div className="glass-card p-6 rounded-xl">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <motion.div animate={{
+            scale: [1, 1.2, 1],
+            opacity: [1, 0.8, 1]
+          }} transition={{
+            duration: 2,
+            repeat: Infinity
+          }} className="h-3 w-3 bg-green-500 rounded-full" />
+          <span className="text-sm text-gray-300">Network Status: Active</span>
+        </div>
+        <span className="text-xs text-gray-500">Latest block: 2min ago</span>
+      </div>
+      <div className="space-y-3">
+        {[1, 2, 3].map(block => <motion.div key={block} initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          delay: block * 0.2
+        }} className="neo-blur p-4 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Database className="h-4 w-4 text-billsync-accent" />
+                <span className="text-xs text-gray-400">Block #{block}</span>
+              </div>
+              <CheckCircle2 className="h-4 w-4 text-green-500" />
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <File className="h-3 w-3" />
+              <span>Receipt_{block}.pdf verified</span>
+            </div>
+          </motion.div>)}
+      </div>
+    </div>
+  </div>;
+};
+
 const Approach = () => {
   const [activeStep, setActiveStep] = useState(0);
   const controls = useAnimation();
@@ -119,46 +163,7 @@ const Approach = () => {
     title: "Blockchain Verification",
     icon: Database,
     description: "Immutable transaction records on the Cardano network.",
-    widget: <div className="glass-card p-6 rounded-xl">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <motion.div animate={{
-              scale: [1, 1.2, 1],
-              opacity: [1, 0.8, 1]
-            }} transition={{
-              duration: 2,
-              repeat: Infinity
-            }} className="h-3 w-3 bg-green-500 rounded-full" />
-                <span className="text-sm text-gray-300">Network Status: Active</span>
-              </div>
-              <span className="text-xs text-gray-500">Latest block: 2min ago</span>
-            </div>
-            <div className="space-y-3">
-              {[1, 2, 3].map(block => <motion.div key={block} initial={{
-            opacity: 0,
-            y: 20
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            delay: block * 0.2
-          }} className="neo-blur p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Database className="h-4 w-4 text-billsync-accent" />
-                      <span className="text-xs text-gray-400">Block #{block}</span>
-                    </div>
-                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <File className="h-3 w-3" />
-                    <span>Receipt_{block}.pdf verified</span>
-                  </div>
-                </motion.div>)}
-            </div>
-          </div>
-        </div>
+    widget: <BlockchainCard />
   }, {
     title: "Tax-Ready Export",
     icon: FileSpreadsheet,
@@ -205,6 +210,7 @@ const Approach = () => {
           </div>
         </div>
   }];
+
   return <section className="py-20 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
@@ -262,4 +268,5 @@ const Approach = () => {
       </div>
     </section>;
 };
+
 export default Approach;
