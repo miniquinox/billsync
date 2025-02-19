@@ -29,6 +29,32 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Define types for our stats and challenges
+interface Stat {
+  label: string;
+  manual: string;
+  automated: string;
+  icon: any; // You might want to be more specific with the icon type
+}
+
+interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  icon: any; // You might want to be more specific with the icon type
+  color: string;
+  iconColor: string;
+  stats: Stat[];
+  impacts?: string[];
+  lossTypes?: { type: string; percentage: number }[];
+  errorTypes?: { type: string; percentage: number }[];
+  accuracyMetrics?: { metric: string; impact: string }[];
+  solution: {
+    title: string;
+    features: string[];
+  }
+}
+
 const Particle = ({ delay }: { delay: number }) => {
   return (
     <motion.div
@@ -57,7 +83,7 @@ const Challenges = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>("time");
 
-  const challenges = [
+  const challenges: Challenge[] = [
     {
       id: "time",
       title: "Time Drain",
@@ -343,31 +369,31 @@ const Challenges = () => {
                 <div className="relative h-[280px]">
                   {challenge.id === "time" && (
                     <motion.div className="space-y-4">
-                      {challenge.stats.map((statItem, idx) => (
+                      {challenge.stats.map((stat: Stat, idx: number) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
                           whileHover={{ scale: 1.02 }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{statItem.label}</span>
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <XCircle className="h-4 w-4 text-red-500" />
                               <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{statItem.manual}</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{statItem.automated}</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
                             </div>
                           </div>
                         </motion.div>
                       ))}
-                      {challenge.impacts.map((impact, idx) => (
+                      {challenge.impacts?.map((impact, idx) => (
                         <motion.div
                           key={idx}
                           initial={{ x: -20, opacity: 0 }}
@@ -385,7 +411,7 @@ const Challenges = () => {
                   {challenge.id === "receipts" && (
                     <motion.div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((statItem, idx) => (
+                        {challenge.stats.map((stat: Stat, idx: number) => (
                           <motion.div
                             key={idx}
                             className="neo-blur p-4 rounded-lg"
@@ -395,26 +421,26 @@ const Challenges = () => {
                             }}
                           >
                             <div className="flex items-center gap-2 mb-2">
-                              <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{statItem.label}</span>
+                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{stat.label}</span>
                             </div>
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <XCircle className="h-4 w-4 text-red-500" />
                                 <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{statItem.manual}</span>
+                                <span className="text-sm font-medium">{stat.manual}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-green-500" />
                                 <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{statItem.automated}</span>
+                                <span className="text-sm font-medium">{stat.automated}</span>
                               </div>
                             </div>
                           </motion.div>
                         ))}
                       </div>
                       <div className="space-y-3">
-                        {challenge.lossTypes.map((loss, idx) => (
+                        {challenge.lossTypes?.map((loss, idx) => (
                           <motion.div
                             key={idx}
                             className="relative h-8"
@@ -436,7 +462,7 @@ const Challenges = () => {
                   {challenge.id === "errors" && (
                     <motion.div className="space-y-4">
                       <div className="grid grid-cols-3 gap-3">
-                        {challenge.errorTypes.map((error, idx) => (
+                        {challenge.errorTypes?.map((error, idx) => (
                           <motion.div
                             key={idx}
                             className="text-center"
@@ -477,7 +503,7 @@ const Challenges = () => {
                           </motion.div>
                         ))}
                       </div>
-                      {challenge.stats.map((statItem, idx) => (
+                      {challenge.stats.map((stat: Stat, idx: number) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
@@ -487,19 +513,19 @@ const Challenges = () => {
                           }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{statItem.label}</span>
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <XCircle className="h-4 w-4 text-red-500" />
                               <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{statItem.manual}</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{statItem.automated}</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
                             </div>
                           </div>
                         </motion.div>
@@ -509,7 +535,7 @@ const Challenges = () => {
 
                   {challenge.id === "accuracy" && (
                     <motion.div className="space-y-4">
-                      {challenge.accuracyMetrics.map((metric, idx) => (
+                      {challenge.accuracyMetrics?.map((metric, idx) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
@@ -519,44 +545,37 @@ const Challenges = () => {
                           }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{statItem.label}</span>
+                            <span className="text-sm text-gray-300">{metric.metric}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <XCircle className="h-4 w-4 text-red-500" />
-                              <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{statItem.manual}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{statItem.automated}</span>
+                              <span className="text-sm text-gray-400">Impact:</span>
+                              <span className="text-sm font-medium">{metric.impact}</span>
                             </div>
                           </div>
                         </motion.div>
                       ))}
                       <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((statItem, idx) => (
+                        {challenge.stats.map((stat: Stat, idx: number) => (
                           <motion.div
                             key={idx}
                             className="neo-blur p-4 rounded-lg"
                             whileHover={{ rotate: 5 }}
                           >
                             <div className="flex items-center gap-2 mb-2">
-                              <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{statItem.label}</span>
+                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{stat.label}</span>
                             </div>
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <XCircle className="h-4 w-4 text-red-500" />
                                 <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{statItem.manual}</span>
+                                <span className="text-sm font-medium">{stat.manual}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-green-500" />
                                 <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{statItem.automated}</span>
+                                <span className="text-sm font-medium">{stat.automated}</span>
                               </div>
                             </div>
                           </motion.div>
