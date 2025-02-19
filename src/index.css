@@ -51,3 +51,9 @@
 .neo-blur {
   @apply backdrop-blur-2xl bg-black/40 border border-white/10;
 }
+
+@layer utilities {
+  .bg-gradient-radial {
+    background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+  }
+}

@@ -1,10 +1,10 @@
+
 import { motion } from "framer-motion";
 import { Clock, AlertCircle, Receipt, Calculator } from "lucide-react";
 import { AccuracyCard } from "./challenges/AccuracyCard";
 import { ErrorCard } from "./challenges/ErrorCard";
 import { ReceiptCard } from "./challenges/ReceiptCard";
 import { TimeCard } from "./challenges/TimeCard";
-import { Particle } from "./challenges/Particle";
 
 const Challenges = () => {
   const challenges = [
@@ -61,8 +61,60 @@ const Challenges = () => {
 
   return (
     <section className="py-16 relative overflow-hidden">
+      {/* Background Elements */}
       <div className="absolute inset-0 z-0">
-        {/* Remove background particles since we now have card-specific backgrounds */}
+        {/* Large blurred spots */}
+        <motion.div
+          className="absolute top-20 -left-32 w-96 h-96 bg-red-500/10 rounded-full blur-[100px]"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+        <motion.div
+          className="absolute -top-32 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.1, 0.15, 0.1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 1,
+          }}
+        />
+        <motion.div
+          className="absolute bottom-0 left-1/3 w-96 h-96 bg-yellow-500/10 rounded-full blur-[100px]"
+          animate={{
+            scale: [1.1, 1, 1.1],
+            opacity: [0.1, 0.15, 0.1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 2,
+          }}
+        />
+
+        {/* Grid texture */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(to right, white 1px, transparent 1px),
+                             linear-gradient(to bottom, white 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }}
+        />
+
+        {/* Radial gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-billsync-dark/80 to-billsync-dark" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -73,9 +125,23 @@ const Challenges = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
+          <motion.h2 
+            className="text-3xl sm:text-4xl font-bold text-gradient mb-4"
+            animate={{
+              textShadow: [
+                "0 0 0px rgba(255,255,255,0.5)",
+                "0 0 10px rgba(255,255,255,0.2)",
+                "0 0 0px rgba(255,255,255,0.5)",
+              ],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          >
             The Challenges We're Solving
-          </h2>
+          </motion.h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             Manual receipt management isn't just tedious—it's a significant business liability
           </p>
