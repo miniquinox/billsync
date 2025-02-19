@@ -109,6 +109,8 @@ const Benefits = () => {
       icon: DollarSign,
       color: "from-green-500/20 to-green-500/5",
       iconColor: "text-green-500",
+      height: "h-[400px]",
+      padding: "p-10",
       metrics: [
         { label: "Annual Savings", value: "$12,000+", icon: TrendingUp },
         { label: "ROI", value: "300%", icon: PieChart },
@@ -125,6 +127,8 @@ const Benefits = () => {
       icon: CheckCircle2,
       color: "from-yellow-500/20 to-yellow-500/5",
       iconColor: "text-yellow-500",
+      height: "h-[400px]",
+      padding: "p-10",
       metrics: [
         { label: "Accuracy Rate", value: "99.9%", icon: BadgeCheck },
         { label: "Error Reduction", value: "-95%", icon: FileWarning },
@@ -135,6 +139,12 @@ const Benefits = () => {
       ],
     },
   ];
+
+  const cardsWithLayout = benefitCards.map(card => ({
+    ...card,
+    height: card.height || "h-[350px]",
+    padding: card.padding || "p-8"
+  }));
 
   return (
     <section className="py-20 relative overflow-hidden">
@@ -182,16 +192,16 @@ const Benefits = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {benefitCards.map((benefit) => (
+          {cardsWithLayout.map((benefit) => (
             <TooltipProvider key={benefit.id}>
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="glass-card rounded-xl overflow-hidden h-[350px]"
+                className={`glass-card rounded-xl overflow-hidden ${benefit.height}`}
                 onHoverStart={() => setActiveCard(benefit.id)}
                 onHoverEnd={() => setActiveCard(null)}
               >
                 <motion.div
-                  className={`h-full p-8 bg-gradient-to-br ${benefit.color} relative`}
+                  className={`h-full ${benefit.padding} bg-gradient-to-br ${benefit.color} relative`}
                   initial={{ backgroundPosition: "0% 0%" }}
                   animate={{ backgroundPosition: "100% 100%" }}
                   transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
@@ -369,32 +379,32 @@ const Benefits = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-12 glass-card p-8 rounded-xl"
+          className="mt-12 glass-card p-6 rounded-xl"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
-                icon: Users,
-                value: "10,000+",
-                label: "Active Users",
+                icon: Clock,
+                value: "Up to 80%",
+                label: "Time Savings Potential",
                 color: "text-blue-500",
               },
               {
-                icon: Receipt,
-                value: "1M+",
-                label: "Receipts Processed",
+                icon: FileCheck,
+                value: "100%",
+                label: "IRS Compliance",
                 color: "text-purple-500",
               },
               {
-                icon: DollarSign,
-                value: "$5M+",
-                label: "Customer Savings",
+                icon: TrendingUp,
+                value: "90%",
+                label: "Error Reduction",
                 color: "text-green-500",
               },
               {
-                icon: BadgeCheck,
-                value: "99.9%",
-                label: "Satisfaction Rate",
+                icon: DollarSign,
+                value: "40%",
+                label: "Cost Reduction",
                 color: "text-yellow-500",
               },
             ].map((stat, index) => (
@@ -404,10 +414,10 @@ const Benefits = () => {
                 className="text-center"
               >
                 <stat.icon
-                  className={`h-8 w-8 ${stat.color} mx-auto mb-3`}
+                  className={`h-6 w-6 ${stat.color} mx-auto mb-2`}
                 />
-                <div className="text-2xl font-bold mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-xl font-bold mb-1">{stat.value}</div>
+                <div className="text-xs text-gray-400">{stat.label}</div>
               </motion.div>
             ))}
           </div>
