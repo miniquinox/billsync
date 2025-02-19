@@ -17,14 +17,17 @@ const CTA = () => {
     setIsSubmitting(true);
 
     try {
-      // Insert into Supabase
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('waitlist')
         .insert([
           { name, email, company }
-        ]);
+        ])
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast.success("Welcome to the BillSync revolution!", {
         description: "We'll be in touch soon with exclusive updates.",
@@ -34,10 +37,10 @@ const CTA = () => {
       setEmail("");
       setName("");
       setCompany("");
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
       toast.error("Something went wrong!", {
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
