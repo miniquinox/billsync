@@ -48,7 +48,7 @@ const Approach = () => {
         scale: 1.02
       })} onHoverEnd={() => controls.start({
         scale: 1
-      })} onClick={simulateUpload} className="border-2 border-dashed border-billsync-accent/30 rounded-lg p-6 text-center relative z-10 py-[32px]">
+      })} onClick={simulateUpload} className="border-2 border-dashed border-billsync-accent/30 rounded-lg p-6 text-center relative z-10 py-[43px]">
             {isUploading ? <div className="space-y-4">
                 <div className="w-full bg-billsync-accent/20 rounded-full h-2">
                   <motion.div className="bg-billsync-accent h-2 rounded-full" style={{
