@@ -17,12 +17,11 @@ const CTA = () => {
     setIsSubmitting(true);
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('waitlist')
         .insert([
           { name, email, company }
-        ])
-        .select();
+        ]);
 
       if (error) {
         console.error('Supabase error:', error);
