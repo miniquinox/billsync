@@ -1,22 +1,10 @@
 import { motion } from "framer-motion";
-import { 
-  Clock, 
-  AlertCircle, 
-  Receipt, 
-  FileX, 
-  Calculator, 
-  BrainCircuit,
-  Clock4,
-  CheckCircle2,
-  XCircle,
-  BadgeAlert,
-  FileWarning,
-  ScanLine
-} from "lucide-react";
+import { Clock, AlertCircle, Receipt, Calculator } from "lucide-react";
 import { AccuracyCard } from "./challenges/AccuracyCard";
 import { ErrorCard } from "./challenges/ErrorCard";
 import { ReceiptCard } from "./challenges/ReceiptCard";
 import { TimeCard } from "./challenges/TimeCard";
+import { Particle } from "./challenges/Particle";
 
 const Challenges = () => {
   const challenges = [
@@ -73,27 +61,8 @@ const Challenges = () => {
 
   const particles = Array.from({ length: 4 }, (_, i) => ({
     id: i,
-    delay: `${Math.random()}s`,
+    delay: Math.random() * 10
   }));
-
-  const Particle = ({ delay }: { delay: string }) => (
-    <motion.div
-      className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-billsync-accent/5 rounded-full filter blur-[100px]"
-      style={{ top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%` }}
-      animate={{
-        x: [20, -20, 20],
-        y: [-10, 10, -10],
-        rotate: [0, 180, 0],
-        scale: [0.5, 1, 0.5],
-      }}
-      transition={{
-        duration: 6,
-        ease: "easeInOut",
-        repeat: Infinity,
-        delay: delay,
-      }}
-    />
-  );
 
   return (
     <section className="py-16 relative overflow-hidden">
