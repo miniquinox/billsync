@@ -1,4 +1,3 @@
-
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
 import { Rocket, Star, ChevronRight, CheckCircle2 } from "lucide-react";
@@ -193,20 +192,31 @@ const CTA = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="mt-12 text-center"
           >
-            <p className="text-sm text-gray-400">
-              Trusted by forward-thinking companies worldwide
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-8 opacity-50">
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="h-8 w-20 rounded bg-white/10"
-                />
-              ))}
-            </div>
+            <motion.div 
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium bg-white/5 text-gray-400 hover:bg-white/10 transition-colors"
+              whileHover={{ scale: 1.05 }}
+            >
+              <span>A product by</span>
+              <motion.a
+                href="https://www.linkedin.com/in/miniquinox"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-billsync-accent hover:text-billsync-accent/80 transition-colors"
+                whileHover={{ scale: 1.05 }}
+              >
+                Joaquin Carretero
+              </motion.a>
+              <span>•</span>
+              <motion.a
+                href="https://www.miniquinox.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-billsync-accent hover:text-billsync-accent/80 transition-colors"
+                whileHover={{ scale: 1.05 }}
+              >
+                miniquinox.com
+              </motion.a>
+            </motion.div>
           </motion.div>
         </div>
       </div>
