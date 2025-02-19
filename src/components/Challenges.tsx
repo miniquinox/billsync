@@ -59,19 +59,10 @@ const Challenges = () => {
     },
   ];
 
-  const particles = Array.from({ length: 4 }, (_, i) => ({
-    id: i,
-    delay: Math.random() * 10
-  }));
-
   return (
     <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 z-0">
-        {particles.map((particle) => (
-          <Particle key={particle.id} delay={particle.delay} />
-        ))}
-        <div className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-billsync-accent/5 rounded-full filter blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-purple-600/5 rounded-full filter blur-[80px]" />
+        {/* Remove background particles since we now have card-specific backgrounds */}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -92,10 +83,7 @@ const Challenges = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {challenges.map((challenge) => (
-            <div
-              key={challenge.id}
-              className="glass-card"
-            >
+            <div key={challenge.id}>
               {challenge.id === "time" && <TimeCard challenge={challenge} />}
               {challenge.id === "receipts" && <ReceiptCard challenge={challenge} />}
               {challenge.id === "errors" && <ErrorCard challenge={challenge} />}
