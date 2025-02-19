@@ -1,4 +1,3 @@
-
 import { motion, useAnimation } from "framer-motion";
 import {
   LineChart,
@@ -39,7 +38,6 @@ const Benefits = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const controls = useAnimation();
 
-  // Enhanced mock data for charts
   const timelineData = Array.from({ length: 12 }, (_, i) => ({
     month: `Month ${i + 1}`,
     manual: Math.round(100 - i * 5 + Math.random() * 10),
@@ -59,7 +57,7 @@ const Benefits = () => {
         { label: "Processing Speed", value: "< 5 seconds", icon: TrendingUp },
       ],
       chart: (
-        <ResponsiveContainer width="100%" height={120}>
+        <ResponsiveContainer width="100%" height={100}>
           <LineChart data={timelineData}>
             <Tooltip
               content={({ payload, label }) => (
@@ -100,10 +98,8 @@ const Benefits = () => {
         { label: "Audit-Ready Records", value: "Always", icon: FileCheck },
       ],
       features: [
-        "Blockchain verification",
-        "Real-time compliance checks",
-        "Automatic backups",
-        "Audit trail",
+        ["Blockchain verification", "Real-time compliance checks"],
+        ["Automatic backups", "Audit trail"],
       ],
     },
     {
@@ -118,9 +114,8 @@ const Benefits = () => {
         { label: "ROI", value: "300%", icon: PieChart },
       ],
       stats: [
-        { label: "Paper Costs", savings: "-90%" },
-        { label: "Storage Fees", savings: "-75%" },
-        { label: "Labor Hours", savings: "-85%" },
+        ["Paper Costs", "-90%", "Storage Fees", "-75%"],
+        ["Labor Hours", "-85%", "HR Savings", "-70%"],
       ],
     },
     {
@@ -135,16 +130,14 @@ const Benefits = () => {
         { label: "Error Reduction", value: "-95%", icon: FileWarning },
       ],
       verificationSteps: [
-        { step: "OCR Scanning", status: "Automated" },
-        { step: "Data Validation", status: "AI-Powered" },
-        { step: "Error Detection", status: "Real-time" },
+        ["OCR Scanning", "Automated", "Data Validation", "AI-Powered"],
+        ["Error Detection", "Real-time", "Quality Check", "Continuous"],
       ],
     },
   ];
 
   return (
     <section className="py-20 relative overflow-hidden">
-      {/* Background gradients */}
       <div className="absolute inset-0 z-0">
         <motion.div
           animate={{
@@ -173,7 +166,6 @@ const Benefits = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -189,135 +181,189 @@ const Benefits = () => {
           </p>
         </motion.div>
 
-        {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {benefitCards.map((benefit) => (
             <TooltipProvider key={benefit.id}>
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="glass-card rounded-xl overflow-hidden h-[400px]"
+                className="glass-card rounded-xl overflow-hidden h-[350px]"
                 onHoverStart={() => setActiveCard(benefit.id)}
                 onHoverEnd={() => setActiveCard(null)}
               >
-                <div
+                <motion.div
                   className={`h-full p-8 bg-gradient-to-br ${benefit.color} relative`}
+                  initial={{ backgroundPosition: "0% 0%" }}
+                  animate={{ backgroundPosition: "100% 100%" }}
+                  transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
                 >
-                  {/* Card Header */}
-                  <div className="flex items-start gap-4 mb-6">
-                    <div
+                  <motion.div
+                    className="flex items-start gap-4 mb-6"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <motion.div
                       className={`p-3 rounded-lg bg-white/5 ${benefit.iconColor}`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
                     >
                       <benefit.icon className="h-6 w-6" />
-                    </div>
+                    </motion.div>
                     <div>
-                      <h3 className="text-xl font-semibold mb-2">
-                        {benefit.title}
-                      </h3>
+                      <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
                       <p className="text-gray-400">{benefit.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Metrics Row */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     {benefit.metrics.map((metric, idx) => (
                       <UITooltip key={idx}>
                         <TooltipTrigger asChild>
                           <motion.div
                             whileHover={{ scale: 1.05 }}
-                            className="neo-blur p-4 rounded-lg cursor-help"
+                            whileTap={{ scale: 0.95 }}
+                            className="neo-blur p-4 rounded-lg cursor-help relative overflow-hidden group"
                           >
-                            <metric.icon
-                              className={`h-5 w-5 ${benefit.iconColor} mb-2`}
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                              initial={{ x: "-100%" }}
+                              whileHover={{ x: "100%" }}
+                              transition={{ duration: 0.5 }}
                             />
-                            <div className="text-lg font-bold">
+                            <metric.icon className={`h-5 w-5 ${benefit.iconColor} mb-2`} />
+                            <motion.div
+                              className="text-lg font-bold"
+                              initial={{ scale: 0.9 }}
+                              whileInView={{ scale: 1 }}
+                              transition={{ duration: 0.3 }}
+                            >
                               {metric.value}
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              {metric.label}
-                            </div>
+                            </motion.div>
+                            <div className="text-xs text-gray-400">{metric.label}</div>
                           </motion.div>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="text-sm">
-                            Based on average customer data
-                          </p>
+                          <p className="text-sm">Based on average customer data</p>
                         </TooltipContent>
                       </UITooltip>
                     ))}
                   </div>
 
-                  {/* Dynamic Content Based on Card Type */}
                   <div className="mt-4">
-                    {benefit.id === "efficiency" && benefit.chart}
+                    {benefit.id === "efficiency" && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {benefit.chart}
+                      </motion.div>
+                    )}
                     
                     {benefit.id === "compliance" && benefit.features && (
-                      <div className="space-y-3">
-                        {benefit.features.map((feature, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="flex items-center gap-2"
-                          >
-                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                            <span className="text-sm text-gray-300">
-                              {feature}
-                            </span>
-                          </motion.div>
+                      <div className="grid grid-cols-2 gap-4">
+                        {benefit.features.map((featureGroup, groupIdx) => (
+                          <div key={groupIdx} className="space-y-3">
+                            {featureGroup.map((feature, idx) => (
+                              <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: (groupIdx * 2 + idx) * 0.1 }}
+                                className="flex items-center gap-2"
+                              >
+                                <motion.div
+                                  whileHover={{ scale: 1.2 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                </motion.div>
+                                <span className="text-sm text-gray-300">{feature}</span>
+                              </motion.div>
+                            ))}
+                          </div>
                         ))}
                       </div>
                     )}
 
                     {benefit.id === "savings" && benefit.stats && (
-                      <div className="space-y-3">
-                        {benefit.stats.map((stat, idx) => (
-                          <motion.div
-                            key={idx}
-                            className="neo-blur p-3 rounded-lg flex items-center justify-between"
-                          >
-                            <span className="text-sm text-gray-300">
-                              {stat.label}
-                            </span>
-                            <span className="text-sm font-medium text-green-500">
-                              {stat.savings}
-                            </span>
-                          </motion.div>
+                      <div className="grid grid-cols-2 gap-4">
+                        {benefit.stats.map((statGroup, groupIdx) => (
+                          <div key={groupIdx} className="space-y-3">
+                            {[0, 2].map((offset) => (
+                              <motion.div
+                                key={offset}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: (groupIdx * 2 + offset/2) * 0.1 }}
+                                className="neo-blur p-3 rounded-lg"
+                              >
+                                <motion.div
+                                  className="flex items-center justify-between"
+                                  whileHover={{ scale: 1.02 }}
+                                >
+                                  <span className="text-sm text-gray-300">
+                                    {statGroup[offset]}
+                                  </span>
+                                  <motion.span
+                                    className="text-sm font-medium text-green-500"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                  >
+                                    {statGroup[offset + 1]}
+                                  </motion.span>
+                                </motion.div>
+                              </motion.div>
+                            ))}
+                          </div>
                         ))}
                       </div>
                     )}
 
-                    {benefit.id === "accuracy" &&
-                      benefit.verificationSteps && (
-                        <div className="space-y-3">
-                          {benefit.verificationSteps.map((step, idx) => (
-                            <motion.div
-                              key={idx}
-                              className="neo-blur p-3 rounded-lg flex items-center justify-between"
-                            >
-                              <div className="flex items-center gap-2">
-                                <Receipt className="h-4 w-4 text-gray-400" />
-                                <span className="text-sm text-gray-300">
-                                  {step.step}
-                                </span>
-                              </div>
-                              <span
-                                className={`text-xs px-2 py-1 rounded-full ${benefit.color} ${benefit.iconColor}`}
+                    {benefit.id === "accuracy" && benefit.verificationSteps && (
+                      <div className="grid grid-cols-2 gap-4">
+                        {benefit.verificationSteps.map((stepGroup, groupIdx) => (
+                          <div key={groupIdx} className="space-y-3">
+                            {[0, 2].map((offset) => (
+                              <motion.div
+                                key={offset}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: (groupIdx * 2 + offset/2) * 0.1 }}
+                                className="neo-blur p-3 rounded-lg"
                               >
-                                {step.status}
-                              </span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      )}
+                                <motion.div
+                                  className="flex items-center justify-between"
+                                  whileHover={{ scale: 1.02 }}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <Receipt className="h-4 w-4 text-gray-400" />
+                                    <span className="text-sm text-gray-300">
+                                      {stepGroup[offset]}
+                                    </span>
+                                  </div>
+                                  <motion.span
+                                    className={`text-xs px-2 py-1 rounded-full ${benefit.color} ${benefit.iconColor}`}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                  >
+                                    {stepGroup[offset + 1]}
+                                  </motion.span>
+                                </motion.div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </TooltipProvider>
           ))}
         </div>
 
-        {/* Summary Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
