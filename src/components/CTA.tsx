@@ -24,8 +24,8 @@ const CTA = () => {
         ]);
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+        console.error('Supabase error message:', error.message);
+        throw new Error(error.message);
       }
 
       toast.success("Welcome to the BillSync revolution!", {
@@ -37,7 +37,7 @@ const CTA = () => {
       setName("");
       setCompany("");
     } catch (error: any) {
-      console.error('Error:', error);
+      console.error('Error message:', error.message);
       toast.error("Something went wrong!", {
         description: error.message || "Please try again later.",
       });
