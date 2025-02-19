@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Challenges from "@/components/Challenges";
 import Approach from "@/components/Approach";
 import Benefits from "@/components/Benefits";
+import CTA from "@/components/CTA";
 
 const Index = () => {
   return (
@@ -11,6 +12,7 @@ const Index = () => {
       <Challenges />
       <Approach />
       <Benefits />
+      <CTA />
     </>
   );
 };
