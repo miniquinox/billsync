@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import { Upload, FileStack, Database, FileSpreadsheet, CheckCircle2, File, Banknote, Calculator, Receipt, CalendarDays } from "lucide-react";
+import { Upload, FileStack, Database, FileSpreadsheet, CheckCircle2, File, Banknote, Calculator, Receipt, CalendarDays, FileText, DollarSign, BarChart4, Download } from "lucide-react";
 import { useState } from "react";
 import { BlockchainCard } from "./blockchain/BlockchainCard";
 
@@ -130,43 +130,143 @@ const Approach = () => {
     description: "One-click export in Turbo Tax compatible format.",
     widget: <div className="glass-card p-6 rounded-xl">
       <div className="space-y-6">
-        <div className="flex justify-between items-center mb-4">
-          <h4 className="text-sm font-medium">2024 Summary</h4>
-          <span className="text-xs text-gray-500">Updated Today</span>
+        {/* Header Section */}
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <motion.div
+              className="p-2.5 rounded-lg bg-white/5 text-green-400"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <FileText className="h-5 w-5" />
+            </motion.div>
+            <div>
+              <h4 className="font-semibold">TurboTax Integration</h4>
+              <p className="text-sm text-gray-400">Auto-sync enabled</p>
+            </div>
+          </div>
+          <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+            Ready to Export
+          </span>
         </div>
-        <motion.div initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          duration: 0.5
-        }} className="grid grid-cols-2 gap-4">
+
+        {/* Analytics Overview */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-2 gap-4"
+        >
           {[{
             label: "Receipts Processed",
-            value: "1,234"
+            value: "1,234",
+            icon: Receipt,
+            color: "text-blue-400"
           }, {
             label: "Categories",
-            value: "15"
+            value: "15",
+            icon: FileText,
+            color: "text-purple-400"
           }, {
             label: "Total Amount",
-            value: "$45,678"
+            value: "$45,678",
+            icon: DollarSign,
+            color: "text-green-400"
           }, {
             label: "Tax Collected",
-            value: "$3,456"
-          }].map((stat, index) => <motion.div key={index} whileHover={{
-            scale: 1.05
-          }} className="neo-blur p-4 rounded-lg text-center">
+            value: "$3,456",
+            icon: Calculator,
+            color: "text-orange-400"
+          }].map((stat, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              className="neo-blur p-4 rounded-lg"
+            >
+              <div className={`${stat.color} mb-2`}>
+                <stat.icon className="h-5 w-5" />
+              </div>
               <div className="text-lg font-bold text-billsync-accent mb-1">
                 {stat.value}
               </div>
               <div className="text-xs text-gray-400">{stat.label}</div>
-            </motion.div>)}
+            </motion.div>
+          ))}
         </motion.div>
-        <motion.button whileHover={{
-          scale: 1.02
-        }} className="w-full py-3 bg-billsync-accent/20 text-billsync-accent border border-billsync-accent/30 rounded-lg text-sm font-medium">
-          Export to Turbo Tax CSV
-        </motion.button>
+
+        {/* Monthly Breakdown */}
+        <div className="neo-blur p-4 rounded-lg space-y-4">
+          <div className="flex justify-between items-center mb-2">
+            <h5 className="text-sm font-medium">Monthly Breakdown</h5>
+            <BarChart4 className="h-4 w-4 text-gray-400" />
+          </div>
+          {[
+            { month: "March", amount: 12456, percentage: 80 },
+            { month: "February", amount: 8234, percentage: 60 },
+            { month: "January", amount: 6123, percentage: 40 }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 }}
+              className="space-y-2"
+            >
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">{item.month}</span>
+                <span className="text-billsync-accent">${item.amount.toLocaleString()}</span>
+              </div>
+              <div className="w-full bg-white/5 rounded-full h-1">
+                <motion.div
+                  className="bg-billsync-accent h-1 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${item.percentage}%` }}
+                  transition={{ duration: 1, delay: index * 0.2 }}
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Export Actions */}
+        <div className="space-y-3">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            className="w-full py-3 bg-billsync-accent text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            Export to TurboTax CSV
+          </motion.button>
+          <div className="flex gap-2">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              className="flex-1 py-2.5 bg-white/5 text-gray-400 rounded-lg text-sm font-medium"
+            >
+              Preview Data
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              className="flex-1 py-2.5 bg-white/5 text-gray-400 rounded-lg text-sm font-medium"
+            >
+              Schedule Export
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Status Indicator */}
+        <motion.div 
+          className="absolute bottom-4 right-4 flex items-center gap-2"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+          }}
+        >
+          <div className="h-2 w-2 rounded-full bg-green-500" />
+          <span className="text-xs text-gray-400">TurboTax Connected</span>
+        </motion.div>
       </div>
     </div>
   }];
