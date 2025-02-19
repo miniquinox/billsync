@@ -343,26 +343,26 @@ const Challenges = () => {
                 <div className="relative h-[280px]">
                   {challenge.id === "time" && (
                     <motion.div className="space-y-4">
-                      {challenge.stats.map((stat, idx) => (
+                      {challenge.stats.map((statItem, idx) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
                           whileHover={{ scale: 1.02 }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
+                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{statItem.label}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <XCircle className="h-4 w-4 text-red-500" />
                               <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
+                              <span className="text-sm font-medium">{statItem.manual}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
+                              <span className="text-sm font-medium">{statItem.automated}</span>
                             </div>
                           </div>
                         </motion.div>
@@ -385,7 +385,7 @@ const Challenges = () => {
                   {challenge.id === "receipts" && (
                     <motion.div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((stat, idx) => (
+                        {challenge.stats.map((statItem, idx) => (
                           <motion.div
                             key={idx}
                             className="neo-blur p-4 rounded-lg"
@@ -395,19 +395,19 @@ const Challenges = () => {
                             }}
                           >
                             <div className="flex items-center gap-2 mb-2">
-                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{stat.label}</span>
+                              <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{statItem.label}</span>
                             </div>
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <XCircle className="h-4 w-4 text-red-500" />
                                 <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{stat.manual}</span>
+                                <span className="text-sm font-medium">{statItem.manual}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-green-500" />
                                 <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{stat.automated}</span>
+                                <span className="text-sm font-medium">{statItem.automated}</span>
                               </div>
                             </div>
                           </motion.div>
@@ -477,7 +477,7 @@ const Challenges = () => {
                           </motion.div>
                         ))}
                       </div>
-                      {challenge.stats.map((stat, idx) => (
+                      {challenge.stats.map((statItem, idx) => (
                         <motion.div
                           key={idx}
                           className="neo-blur p-4 rounded-lg"
@@ -487,19 +487,19 @@ const Challenges = () => {
                           }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
+                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{statItem.label}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <XCircle className="h-4 w-4 text-red-500" />
                               <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
+                              <span className="text-sm font-medium">{statItem.manual}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
+                              <span className="text-sm font-medium">{statItem.automated}</span>
                             </div>
                           </div>
                         </motion.div>
@@ -519,44 +519,44 @@ const Challenges = () => {
                           }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                            <span className="text-sm text-gray-300">{stat.label}</span>
+                            <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{statItem.label}</span>
                           </div>
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
                               <XCircle className="h-4 w-4 text-red-500" />
                               <span className="text-sm text-gray-400">Manual:</span>
-                              <span className="text-sm font-medium">{stat.manual}</span>
+                              <span className="text-sm font-medium">{statItem.manual}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span className="text-sm text-gray-400">BillSync:</span>
-                              <span className="text-sm font-medium">{stat.automated}</span>
+                              <span className="text-sm font-medium">{statItem.automated}</span>
                             </div>
                           </div>
                         </motion.div>
                       ))}
                       <div className="grid grid-cols-2 gap-4">
-                        {challenge.stats.map((stat, idx) => (
+                        {challenge.stats.map((statItem, idx) => (
                           <motion.div
                             key={idx}
                             className="neo-blur p-4 rounded-lg"
                             whileHover={{ rotate: 5 }}
                           >
                             <div className="flex items-center gap-2 mb-2">
-                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                              <span className="text-sm text-gray-300">{stat.label}</span>
+                              <statItem.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{statItem.label}</span>
                             </div>
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <XCircle className="h-4 w-4 text-red-500" />
                                 <span className="text-sm text-gray-400">Manual:</span>
-                                <span className="text-sm font-medium">{stat.manual}</span>
+                                <span className="text-sm font-medium">{statItem.manual}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-green-500" />
                                 <span className="text-sm text-gray-400">BillSync:</span>
-                                <span className="text-sm font-medium">{stat.automated}</span>
+                                <span className="text-sm font-medium">{statItem.automated}</span>
                               </div>
                             </div>
                           </motion.div>
