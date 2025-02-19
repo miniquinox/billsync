@@ -3,10 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // Replace 'billsync' with your repo name if different
-  base: "/billsync/", 
+  base: "/", // THIS NEEDS TO BE "/" for root domain like billsync.dev
   server: {
     host: "::",
     port: 8080,
