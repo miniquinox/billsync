@@ -63,7 +63,7 @@ const Approach = () => {
           opacity: 0
         }} animate={{
           opacity: 1
-        }} className="border-2 border-dashed border-[#9b87f5]/30 rounded-lg p-6 text-center relative z-10 cursor-pointer" onClick={simulateUpload}>
+        }} onClick={simulateUpload} className="border-2 border-dashed border-[#9b87f5]/30 rounded-lg p-6 text-center relative z-10 cursor-pointer py-[90px]">
             {isUploading ? <div className="space-y-4">
                 <div className="w-full bg-[#9b87f5]/20 rounded-full h-2">
                   <motion.div className="bg-[#9b87f5] h-2 rounded-full" style={{
@@ -79,7 +79,7 @@ const Approach = () => {
                     <CheckCircle2 className="h-5 w-5" />
                     <span>Upload Complete!</span>
                   </motion.div>}
-              </div> : <div className="space-y-4 my-[57px]">
+              </div> : <div className="space-y-4 my-0">
                 <Upload className="w-12 h-12 text-[#9b87f5] mx-auto mb-4" />
                 <p className="text-sm text-gray-400 mb-2">
                   Drop your receipt here or click to upload
