@@ -72,7 +72,14 @@ export const BlockchainCard = () => {
           borderColor: isHovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.08)"
         }}
       >
-        <div className="space-y-3">
+        {/* Title Bar */}
+        <div className="flex items-center gap-2 mb-4">
+          <Shield className="h-4 w-4 text-blue-400" />
+          <span className="text-sm text-gray-400">Your data is secured on Cardano</span>
+        </div>
+
+        {/* Fixed Height Container */}
+        <div className="h-[280px] space-y-3 overflow-hidden">
           {verificationSteps.map((step, index) => (
             <motion.div
               key={step.id}
@@ -100,14 +107,14 @@ export const BlockchainCard = () => {
                 </div>
               </div>
 
-              <AnimatePresence>
+              <AnimatePresence mode="wait">
                 {activeStep === index && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-3 space-y-1.5 overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-3 space-y-1.5"
                   >
                     {step.details.map((detail, idx) => (
                       <motion.div
