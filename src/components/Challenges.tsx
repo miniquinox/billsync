@@ -55,6 +55,35 @@ interface Challenge {
   }
 }
 
+interface Particle {
+  id: number;
+  delay: number;
+}
+
+const Particle = ({ delay }: { delay: number }) => {
+  return (
+    <motion.div
+      className="absolute w-1 h-1 bg-white/10 rounded-full"
+      initial={{
+        x: Math.random() * 100 + "%",
+        y: Math.random() * 100 + "%",
+        opacity: 0,
+      }}
+      animate={{
+        x: Math.random() * 100 + "%",
+        y: Math.random() * 100 + "%",
+        opacity: [0, 1, 0],
+      }}
+      transition={{
+        duration: 5,
+        delay: delay,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    />
+  );
+}
+
 const TimeCard = ({ challenge }: { challenge: Challenge }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   
