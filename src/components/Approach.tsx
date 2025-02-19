@@ -63,7 +63,7 @@ const Approach = () => {
           opacity: 0
         }} animate={{
           opacity: 1
-        }} onClick={simulateUpload} className="border-2 border-dashed border-[#9b87f5]/30 rounded-lg p-6 text-center relative z-10 cursor-pointer py-[90px]">
+        }} onClick={simulateUpload} className="border-2 border-dashed border-[#9b87f5]/30 rounded-lg p-6 text-center relative z-10 cursor-pointer py-[81px]">
             {isUploading ? <div className="space-y-4">
                 <div className="w-full bg-[#9b87f5]/20 rounded-full h-2">
                   <motion.div className="bg-[#9b87f5] h-2 rounded-full" style={{
@@ -180,7 +180,7 @@ const Approach = () => {
         duration: 3,
         repeat: Infinity
       }} />
-        <motion.div className="relative w-full h-full border border-white/[0.08] bg-white/[0.02] rounded-2xl p-6">
+        <motion.div className="relative w-full h-full border border-white/[0.08] bg-white/[0.02] rounded-2xl p-6 py-[27px]">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
