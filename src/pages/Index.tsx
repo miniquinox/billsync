@@ -1,8 +1,14 @@
 
 import Hero from "@/components/Hero";
+import Challenges from "@/components/Challenges";
 
 const Index = () => {
-  return <Hero />;
+  return (
+    <>
+      <Hero />
+      <Challenges />
+    </>
+  );
 };
 
 export default Index;
