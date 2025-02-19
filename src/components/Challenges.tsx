@@ -205,6 +205,57 @@ const Challenges = () => {
     },
   ];
 
+  const processSteps = [
+    {
+      icon: Receipt,
+      title: "Receipt Collection",
+      traditional: {
+        text: "Physical storage, easily lost",
+        color: "text-red-500",
+      },
+      billsync: {
+        text: "Instant digital capture",
+        color: "text-green-500",
+      }
+    },
+    {
+      icon: FileSearch,
+      title: "Data Extraction",
+      traditional: {
+        text: "Manual typing, prone to errors",
+        color: "text-red-500",
+      },
+      billsync: {
+        text: "AI-powered automation",
+        color: "text-green-500",
+      }
+    },
+    {
+      icon: BrainCircuit,
+      title: "Processing",
+      traditional: {
+        text: "Hours of manual work",
+        color: "text-red-500",
+      },
+      billsync: {
+        text: "Seconds with AI",
+        color: "text-green-500",
+      }
+    },
+    {
+      icon: CheckCircle2,
+      title: "Verification",
+      traditional: {
+        text: "Multiple manual checks",
+        color: "text-red-500",
+      },
+      billsync: {
+        text: "Automated validation",
+        color: "text-green-500",
+      }
+    }
+  ];
+
   const particles = Array.from({ length: 50 }, (_, i) => ({
     id: i,
     delay: Math.random() * 10
@@ -258,7 +309,7 @@ const Challenges = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
           {challenges.map((challenge, index) => (
             <motion.div
               key={challenge.id}
@@ -289,301 +340,300 @@ const Challenges = () => {
                   </div>
                 </div>
 
-                <div className="relative h-[280px] overflow-hidden">
-                  <motion.div
-                    initial={{ opacity: 1 }}
-                    animate={{ 
-                      opacity: activeCard === challenge.id ? 0 : 1,
-                      x: activeCard === challenge.id ? -20 : 0 
-                    }}
-                    className="absolute inset-0"
-                  >
-                    <div className="grid grid-cols-2 gap-4">
+                <div className="relative h-[280px]">
+                  {challenge.id === "time" && (
+                    <motion.div className="space-y-4">
                       {challenge.stats.map((stat, idx) => (
-                        <TooltipProvider key={idx}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <motion.div
-                                className="neo-blur p-4 rounded-lg relative overflow-hidden group cursor-help"
-                                whileHover={{ scale: 1.05 }}
-                              >
-                                <motion.div
-                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                                  initial={{ x: "-100%" }}
-                                  whileHover={{ x: "100%" }}
-                                  transition={{ duration: 0.5 }}
-                                />
-                                <div className="flex items-center gap-2 mb-2">
-                                  <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
-                                  <span className="text-sm text-gray-300">{stat.label}</span>
-                                </div>
-                                <div className="space-y-1">
-                                  <div className="flex items-center gap-2">
-                                    <XCircle className="h-4 w-4 text-red-500" />
-                                    <span className="text-sm text-gray-400">Manual:</span>
-                                    <span className="text-sm font-medium">{stat.manual}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                    <span className="text-sm text-gray-400">BillSync:</span>
-                                    <span className="text-sm font-medium">{stat.automated}</span>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-sm">Based on industry averages</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  <AnimatePresence>
-                    {activeCard === challenge.id && (
-                      <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        className="absolute inset-0"
-                      >
-                        {challenge.id === "time" && (
-                          <div className="neo-blur p-4 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3">Common Impacts:</h4>
-                            <div className="grid grid-cols-2 gap-3">
-                              {challenge.impacts.map((impact, idx) => (
-                                <motion.div
-                                  key={idx}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.1 }}
-                                  className="flex items-center gap-2"
-                                >
-                                  <AlertTriangle className="h-4 w-4 text-amber-500" />
-                                  <span className="text-sm text-gray-300">{impact}</span>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {challenge.id === "receipts" && (
-                          <div className="neo-blur p-4 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3">Loss Analysis:</h4>
-                            <div className="space-y-3">
-                              {challenge.lossTypes.map((loss, idx) => (
-                                <motion.div
-                                  key={idx}
-                                  className="relative h-8"
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${loss.percentage}%` }}
-                                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                >
-                                  <div className={`absolute inset-0 ${challenge.color} rounded-full`} />
-                                  <div className="absolute inset-0 flex items-center justify-between px-3">
-                                    <span className="text-xs">{loss.type}</span>
-                                    <span className="text-xs font-medium">{loss.percentage}%</span>
-                                  </div>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {challenge.id === "errors" && (
-                          <div className="neo-blur p-4 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3">Error Distribution:</h4>
-                            <div className="grid grid-cols-3 gap-3">
-                              {challenge.errorTypes.map((error, idx) => (
-                                <motion.div
-                                  key={idx}
-                                  className="text-center"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  transition={{ delay: idx * 0.1 }}
-                                >
-                                  <div className="relative mb-2">
-                                    <svg className="w-16 h-16">
-                                      <circle
-                                        cx="32"
-                                        cy="32"
-                                        r="28"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="8"
-                                        className="text-gray-700"
-                                      />
-                                      <motion.circle
-                                        cx="32"
-                                        cy="32"
-                                        r="28"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="8"
-                                        className={challenge.iconColor}
-                                        strokeDasharray={175.9}
-                                        strokeDashoffset={175.9 - (175.9 * error.percentage) / 100}
-                                        transform="rotate(-90 32 32)"
-                                        initial={{ strokeDashoffset: 175.9 }}
-                                        animate={{ strokeDashoffset: 175.9 - (175.9 * error.percentage) / 100 }}
-                                        transition={{ duration: 1 }}
-                                      />
-                                    </svg>
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                      <span className="text-sm font-medium">{error.percentage}%</span>
-                                    </div>
-                                  </div>
-                                  <span className="text-xs text-gray-400">{error.type}</span>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {challenge.id === "accuracy" && (
-                          <div className="neo-blur p-4 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3">Impact Analysis:</h4>
-                            <div className="space-y-3">
-                              {challenge.accuracyMetrics.map((metric, idx) => (
-                                <motion.div
-                                  key={idx}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.1 }}
-                                  className="flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <BrainCircuit className={`h-4 w-4 ${challenge.iconColor}`} />
-                                    <span className="text-sm text-gray-300">{metric.metric}</span>
-                                  </div>
-                                  <span className="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-500">
-                                    {metric.impact}
-                                  </span>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
                         <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
+                          key={idx}
                           className="neo-blur p-4 rounded-lg"
+                          whileHover={{ scale: 1.02 }}
                         >
-                          <h4 className="text-sm font-medium mb-3">{challenge.solution.title}</h4>
-                          <div className="grid grid-cols-2 gap-3">
-                            {challenge.solution.features.map((feature, idx) => (
-                              <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="flex items-center gap-2"
-                              >
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                <span className="text-sm text-gray-300">{feature}</span>
-                              </motion.div>
-                            ))}
+                          <div className="flex items-center gap-2 mb-2">
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <XCircle className="h-4 w-4 text-red-500" />
+                              <span className="text-sm text-gray-400">Manual:</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                              <span className="text-sm text-gray-400">BillSync:</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
+                            </div>
                           </div>
                         </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      ))}
+                      {challenge.impacts.map((impact, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: idx * 0.1 }}
+                          className="flex items-center gap-2"
+                        >
+                          <AlertTriangle className="h-4 w-4 text-amber-500" />
+                          <span className="text-sm text-gray-300">{impact}</span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {challenge.id === "receipts" && (
+                    <motion.div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        {challenge.stats.map((stat, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="neo-blur p-4 rounded-lg"
+                            whileHover={{
+                              scale: 1.05,
+                              transition: { type: "spring", stiffness: 300 }
+                            }}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{stat.label}</span>
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <XCircle className="h-4 w-4 text-red-500" />
+                                <span className="text-sm text-gray-400">Manual:</span>
+                                <span className="text-sm font-medium">{stat.manual}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                <span className="text-sm text-gray-400">BillSync:</span>
+                                <span className="text-sm font-medium">{stat.automated}</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                      <div className="space-y-3">
+                        {challenge.lossTypes.map((loss, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="relative h-8"
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${loss.percentage}%` }}
+                            viewport={{ once: true }}
+                          >
+                            <div className={`absolute inset-0 ${challenge.color} rounded-full`} />
+                            <div className="absolute inset-0 flex items-center justify-between px-3">
+                              <span className="text-xs">{loss.type}</span>
+                              <span className="text-xs font-medium">{loss.percentage}%</span>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {challenge.id === "errors" && (
+                    <motion.div className="space-y-4">
+                      <div className="grid grid-cols-3 gap-3">
+                        {challenge.errorTypes.map((error, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="text-center"
+                            whileHover={{ scale: 1.1 }}
+                          >
+                            <div className="relative mb-2">
+                              <svg className="w-16 h-16">
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="8"
+                                  className="text-gray-700"
+                                />
+                                <motion.circle
+                                  cx="32"
+                                  cy="32"
+                                  r="28"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="8"
+                                  className={challenge.iconColor}
+                                  strokeDasharray={175.9}
+                                  strokeDashoffset={175.9 - (175.9 * error.percentage) / 100}
+                                  transform="rotate(-90 32 32)"
+                                  initial={{ strokeDashoffset: 175.9 }}
+                                  animate={{ strokeDashoffset: 175.9 - (175.9 * error.percentage) / 100 }}
+                                  transition={{ duration: 1 }}
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-sm font-medium">{error.percentage}%</span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-gray-400">{error.type}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+                      {challenge.stats.map((stat, idx) => (
+                        <motion.div
+                          key={idx}
+                          className="neo-blur p-4 rounded-lg"
+                          whileHover={{
+                            y: -5,
+                            transition: { type: "spring", stiffness: 400 }
+                          }}
+                        >
+                          <div className="flex items-center gap-2 mb-2">
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <XCircle className="h-4 w-4 text-red-500" />
+                              <span className="text-sm text-gray-400">Manual:</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                              <span className="text-sm text-gray-400">BillSync:</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {challenge.id === "accuracy" && (
+                    <motion.div className="space-y-4">
+                      {challenge.accuracyMetrics.map((metric, idx) => (
+                        <motion.div
+                          key={idx}
+                          className="neo-blur p-4 rounded-lg"
+                          whileHover={{
+                            x: 10,
+                            transition: { type: "spring", damping: 5 }
+                          }}
+                        >
+                          <div className="flex items-center gap-2 mb-2">
+                            <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                            <span className="text-sm text-gray-300">{stat.label}</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <XCircle className="h-4 w-4 text-red-500" />
+                              <span className="text-sm text-gray-400">Manual:</span>
+                              <span className="text-sm font-medium">{stat.manual}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                              <span className="text-sm text-gray-400">BillSync:</span>
+                              <span className="text-sm font-medium">{stat.automated}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                      <div className="grid grid-cols-2 gap-4">
+                        {challenge.stats.map((stat, idx) => (
+                          <motion.div
+                            key={idx}
+                            className="neo-blur p-4 rounded-lg"
+                            whileHover={{ rotate: 5 }}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <stat.icon className={`h-4 w-4 ${challenge.iconColor}`} />
+                              <span className="text-sm text-gray-300">{stat.label}</span>
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <XCircle className="h-4 w-4 text-red-500" />
+                                <span className="text-sm text-gray-400">Manual:</span>
+                                <span className="text-sm font-medium">{stat.manual}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                <span className="text-sm text-gray-400">BillSync:</span>
+                                <span className="text-sm font-medium">{stat.automated}</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h3 className="text-2xl sm:text-3xl font-bold text-gradient mb-4">
-              Traditional vs BillSync Process
-            </h3>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              See how BillSync transforms your receipt management workflow
-            </p>
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h3 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
+            Traditional vs BillSync Process
+          </h3>
+        </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {processSteps.map((step, index) => (
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="glass-card p-6 rounded-xl"
+              transition={{ delay: index * 0.1 }}
+              className="text-center space-y-6"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 rounded-lg bg-red-500/20 text-red-500">
-                  <XCircle className="h-6 w-6" />
-                </div>
-                <h4 className="text-xl font-semibold">Traditional Process</h4>
-              </div>
-              <div className="space-y-4">
-                {[
-                  "Manual data entry and verification",
-                  "Physical storage and filing",
-                  "Time-consuming categorization",
-                  "Prone to human error",
-                  "Limited accessibility",
-                  "Risk of loss or damage"
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex items-center gap-3"
-                  >
-                    <Ban className="h-4 w-4 text-red-500" />
-                    <span className="text-gray-400">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+              <motion.div
+                className="w-16 h-16 mx-auto rounded-full bg-billsync-accent/10 flex items-center justify-center"
+                whileHover={{ scale: 1.1, rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              >
+                <step.icon className="w-8 h-8 text-billsync-accent" />
+              </motion.div>
+              
+              <h4 className="text-xl font-semibold">{step.title}</h4>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="glass-card p-6 rounded-xl"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 rounded-lg bg-green-500/20 text-green-500">
-                  <CheckCircle2 className="h-6 w-6" />
-                </div>
-                <h4 className="text-xl font-semibold">BillSync Process</h4>
-              </div>
               <div className="space-y-4">
-                {[
-                  "Instant digital capture and backup",
-                  "Automated data extraction",
-                  "Smart categorization",
-                  "99.9% accuracy rate",
-                  "24/7 cloud accessibility",
-                  "Secure and organized storage"
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex items-center gap-3"
-                  >
+                <motion.div
+                  className="neo-blur p-4 rounded-lg"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <XCircle className="h-4 w-4 text-red-500" />
+                    <span className="font-medium">Traditional</span>
+                  </div>
+                  <p className={`text-sm ${step.traditional.color}`}>
+                    {step.traditional.text}
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  className="neo-blur p-4 rounded-lg"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
                     <CheckCircle2 className="h-4 w-4 text-green-500" />
-                    <span className="text-gray-400">{item}</span>
-                  </motion.div>
-                ))}
+                    <span className="font-medium">BillSync</span>
+                  </div>
+                  <p className={`text-sm ${step.billsync.color}`}>
+                    {step.billsync.text}
+                  </p>
+                </motion.div>
               </div>
+
+              {index < processSteps.length - 1 && (
+                <div className="hidden lg:block absolute right-0 top-1/2 w-[calc(100%-4rem)] h-px bg-gradient-to-r from-billsync-accent/20 to-transparent" />
+              )}
             </motion.div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
