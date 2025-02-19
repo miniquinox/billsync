@@ -4,9 +4,9 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  base: "/", // THIS NEEDS TO BE "/" for root domain like billsync.dev
+  base: "/", // Correct for billsync.dev (root domain)
   server: {
-    host: "::",
+    host: true, // Allow LAN access if needed
     port: 8080,
   },
   plugins: [
@@ -17,5 +17,9 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    outDir: "dist", // Default, but good to be explicit
+    assetsDir: "assets", // Default, but makes it clear
   },
 }));
